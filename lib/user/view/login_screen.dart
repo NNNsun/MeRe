@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:new_me_re/common/const/img_auth.dart';
+import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
 import 'package:new_me_re/common/layout/login_layout.dart';
 

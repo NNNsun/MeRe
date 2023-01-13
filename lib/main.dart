@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:new_me_re/user/view/sign_up_screen.dart';
 import 'user/view/login_screen.dart';
 
 void main() {
@@ -14,16 +15,16 @@ class _App extends StatelessWidget {
     //final router = ref.watch(routerProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // 기본 폰트 모두 'NotoSans'로 변경
-      // theme: ThemeData(
-      //   fontFamily: 'NotoSans',
-      // ),
+      theme: ThemeData(
+        fontFamily: 'NotoSans',
+      ),
       // theme: ThemeData(
       //   primaryColor: Colors.blue,
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       //routerConfig: router,
-      home: LoginScreen(),
+      home: SignUpScreen(),
+      //LoginScreen(),
     );
   }
 }
