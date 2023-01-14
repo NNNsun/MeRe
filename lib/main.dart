@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/user/view/sign_up_screen.dart';
 import 'user/view/login_screen.dart';
+import 'user/view/sign_up2_screen.dart';
 
 void main() {
   runApp(const _App());
@@ -23,8 +24,9 @@ class _App extends StatelessWidget {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       //routerConfig: router,
-      home: SignUpScreen(),
+      home: SignUp2Screen(),
       //LoginScreen(),
+      //SignUpScreen(),
     );
   }
 }

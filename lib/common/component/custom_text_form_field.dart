@@ -8,9 +8,11 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final bool autofocus;
   final ValueChanged<String>? onChanged;
+  final bool isPonNumber;
 
   const CustomTextFormField({
     required this.onChanged,
+    this.isPonNumber = false,
     this.autofocus = false,
     this.obscureText = false,
     this.hintText,
@@ -22,7 +24,7 @@ class CustomTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseBorder = OutlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.transparent,
+        color: INPUT_BORDER_COLOR,
         width: 1.0,
       ),
       borderRadius: BorderRadius.circular(8),
@@ -30,16 +32,16 @@ class CustomTextFormField extends StatelessWidget {
 
     return TextFormField(
       cursorColor: PRIMARY_COLOR,
-
-      // 비밀번호 입력할때
-      obscureText: obscureText,
-      keyboardType: TextInputType.number,
+      keyboardType: isPonNumber ? TextInputType.number : TextInputType.text,
       autofocus: autofocus,
       onChanged: onChanged,
       inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly, //숫자만!
-        _NumberFormatter(),
-        LengthLimitingTextInputFormatter(13) //13자리만 입력받도록 하이픈 2개+숫자 11개
+        if (isPonNumber) FilteringTextInputFormatter.digitsOnly, // 숫자만!
+        if (isPonNumber) _NumberFormatter(), // 하이픈 추가
+        // 폰번호, 닉네임 길이
+        isPonNumber
+            ? LengthLimitingTextInputFormatter(13)
+            : LengthLimitingTextInputFormatter(10)
       ],
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(20),

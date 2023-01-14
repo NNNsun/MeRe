@@ -1,26 +1,28 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:new_me_re/common/component/custom_text_form_field.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/login_layout.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignUp2Screen extends StatefulWidget {
+  const SignUp2Screen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUp2Screen> createState() => _SignUp2ScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  String poneNumber = '';
-  String certifyNumber = '';
+class _SignUp2ScreenState extends State<SignUp2Screen> {
+  String nickName = '';
+  bool isUnique = true;
   @override
   Widget build(BuildContext context) {
-    final isRight = false;
+    //final isRight = false;
     return LoginLayout(
       hasAppBer: true,
       child: SingleChildScrollView(
@@ -34,76 +36,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Row(
                 children: [
-                  SvgPicture.asset(circle_fill_01),
+                  SvgPicture.asset(circle_check),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: SvgPicture.asset(dots),
                   ),
-                  SvgPicture.asset(circle_02),
+                  SvgPicture.asset(circle_fill_02),
                 ],
               ),
               SizedBox(
                 height: 20,
               ),
               Text(
-                '전화번호 먼저\n인증할게요',
+                '정보까지 입력하면\n가입 완료!',
                 style: TextStyle(
                   fontSize: 32,
                 ),
               ),
-              const SizedBox(height: 16.0),
-              Stack(
-                children: [
-                  CustomTextFormField(
-                    isPonNumber: true,
-                    hintText: '전화번호를 입력하세요.',
-                    onChanged: (String value) {
-                      poneNumber = value;
-                    },
-                  ),
-                  Positioned(
-                    top: 13,
-                    right: 10,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.23,
-                      height: MediaQuery.of(context).size.width * 0.10,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: StadiumBorder(),
-                          backgroundColor: PRIMARY_COLOR,
-                          disabledBackgroundColor: INPUT_BG_COLOR,
-                        ),
-                        child: Text('인증하기'),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20.0),
+              Text('닉네임'),
+              const SizedBox(height: 8.0),
               Stack(
                 children: [
                   CustomTextFormField(
                     isPonNumber: false,
-                    hintText: '인증번호를 입력하세요.',
+                    hintText: '닉네임을 입력하세요.',
+                    errorText: isUnique ? null : '동일한 닉네임이 존재합니다.',
                     onChanged: (String value) {
-                      certifyNumber = value;
+                      nickName = value;
                     },
                   ),
                   Positioned(
-                    top: 20,
-                    right: 70,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.23,
-                      height: MediaQuery.of(context).size.width * 0.10,
-                      child: _CountdownPage(),
-                    ),
-                  ),
-                  Positioned(
                     top: 13,
-                    bottom: 13,
                     right: 10,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.23,
@@ -115,12 +79,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           backgroundColor: PRIMARY_COLOR,
                           disabledBackgroundColor: INPUT_BG_COLOR,
                         ),
-                        child: Text('확인'),
+                        child: Text('중복확인'),
                       ),
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 40),
+              Text('생년월일'),
+              const SizedBox(height: 8.0),
+              Row(), //커스텀 드롭다운
               SizedBox(
                 height: MediaQuery.of(context).size.width * 0.75,
               ),
@@ -166,42 +134,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
-class _CountdownPage extends StatefulWidget {
-  const _CountdownPage({super.key});
+class BirthDatePicker extends StatelessWidget {
+  final void Function(DateTime) onDateTimeChanged;
+  final String? initDateStr;
 
-  @override
-  State<_CountdownPage> createState() => _CountdownPageState();
-}
-
-class _CountdownPageState extends State<_CountdownPage>
-    with SingleTickerProviderStateMixin {
-  late AnimationController controller;
-
-  String get countText {
-    Duration count = controller.duration! * controller.value;
-    return '${count.inSeconds}';
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 60));
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+  BirthDatePicker({
+    required this.onDateTimeChanged,
+    this.initDateStr,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      countText,
-      style: TextStyle(
-        color: IMPACT_COLOR,
-        fontWeight: FontWeight.w500,
+    final initDate =
+        DateFormat('yyyy-MM-dd').parse(initDateStr ?? '2000-01-01');
+    return SizedBox(
+      height: 300,
+      child: CupertinoDatePicker(
+        minimumYear: 1900,
+        maximumYear: DateTime.now().year,
+        initialDateTime: initDate,
+        maximumDate: DateTime.now(),
+        onDateTimeChanged: onDateTimeChanged,
+        mode: CupertinoDatePickerMode.date,
       ),
     );
   }

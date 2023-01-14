@@ -12,123 +12,124 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginLayout(
       child: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
-          ),
-          SvgPicture.asset(
-            title,
-            height: MediaQuery.of(context).size.height * 0.027,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          SvgPicture.asset(
-            mere_logo_svg,
-            height: MediaQuery.of(context).size.height * 0.063,
-          ),
-          SizedBox(
-            height: 60,
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.3,
-            width: MediaQuery.of(context).size.height * 0.3,
-            child: Image.asset(illust),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Row(children: <Widget>[
-              Expanded(
-                  child: Divider(
-                thickness: 1,
-              )),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26.0),
-                child: Text(
-                  "간편로그인",
-                  style: TextStyle(
-                    color: Colors.black26,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
+            SvgPicture.asset(
+              title,
+              height: MediaQuery.of(context).size.height * 0.027,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            SvgPicture.asset(
+              mere_logo_svg,
+              height: MediaQuery.of(context).size.height * 0.063,
+            ),
+            SizedBox(
+              height: 60,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              width: MediaQuery.of(context).size.height * 0.3,
+              child: Image.asset(illust),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Row(children: <Widget>[
+                Expanded(
+                    child: Divider(
+                  thickness: 1,
+                )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                  child: Text(
+                    "간편로그인",
+                    style: TextStyle(
+                      color: Colors.black26,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                  child: Divider(
-                thickness: 1,
-              )),
-            ]),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        kakao,
+                Expanded(
+                    child: Divider(
+                  thickness: 1,
+                )),
+              ]),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: SvgPicture.asset(
+                          kakao,
+                        ),
+                        iconSize: 50,
                       ),
-                      iconSize: 50,
-                    ),
-                    Text(
-                      '카카오톡',
-                      style: TextStyle(
-                        color: Colors.black45,
-                      ),
-                    )
-                  ],
+                      Text(
+                        '카카오톡',
+                        style: TextStyle(
+                          color: Colors.black45,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        naver,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: SvgPicture.asset(
+                          naver,
+                        ),
+                        iconSize: 50,
                       ),
-                      iconSize: 50,
-                    ),
-                    Text(
-                      '네이버',
-                      style: TextStyle(
-                        color: Colors.black45,
-                      ),
-                    )
-                  ],
+                      Text(
+                        '네이버',
+                        style: TextStyle(
+                          color: Colors.black45,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Column(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        google,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: SvgPicture.asset(
+                          google,
+                        ),
+                        iconSize: 50,
                       ),
-                      iconSize: 50,
-                    ),
-                    Text(
-                      '구글',
-                      style: TextStyle(
-                        color: Colors.black45,
-                      ),
-                    )
-                  ],
+                      Text(
+                        '구글',
+                        style: TextStyle(
+                          color: Colors.black45,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      )),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
