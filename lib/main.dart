@@ -24,9 +24,9 @@ class _App extends StatelessWidget {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       //routerConfig: router,
-      home: SignUp2Screen(),
+      home: SignUpScreen(),
       //LoginScreen(),
-      //SignUpScreen(),
+      //SignUp2Screen(),
     );
   }
 }

@@ -9,12 +9,14 @@ class CustomTextFormField extends StatelessWidget {
   final bool autofocus;
   final ValueChanged<String>? onChanged;
   final bool isPonNumber;
+  final bool isNumber;
 
   const CustomTextFormField({
     required this.onChanged,
     this.isPonNumber = false,
     this.autofocus = false,
     this.obscureText = false,
+    this.isNumber = false,
     this.hintText,
     this.errorText,
     Key? key,
@@ -32,16 +34,19 @@ class CustomTextFormField extends StatelessWidget {
 
     return TextFormField(
       cursorColor: PRIMARY_COLOR,
-      keyboardType: isPonNumber ? TextInputType.number : TextInputType.text,
+      keyboardType:
+          isPonNumber || isNumber ? TextInputType.number : TextInputType.text,
       autofocus: autofocus,
       onChanged: onChanged,
       inputFormatters: [
-        if (isPonNumber) FilteringTextInputFormatter.digitsOnly, // 숫자만!
+        if (isNumber) FilteringTextInputFormatter.digitsOnly, // 숫자만!
         if (isPonNumber) _NumberFormatter(), // 하이픈 추가
+        if (isNumber && !isPonNumber)
+          LengthLimitingTextInputFormatter(6), // 인증번호 6글자
         // 폰번호, 닉네임 길이
         isPonNumber
             ? LengthLimitingTextInputFormatter(13)
-            : LengthLimitingTextInputFormatter(10)
+            : LengthLimitingTextInputFormatter(10),
       ],
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(20),
