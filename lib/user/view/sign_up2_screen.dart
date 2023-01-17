@@ -85,7 +85,7 @@ class _SignUp2ScreenState extends State<SignUp2Screen> {
               Text(
                 '정보까지 입력하면\n가입 완료!',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 28,
                 ),
               ),
               const SizedBox(height: 20.0),
