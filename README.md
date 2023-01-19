@@ -5,7 +5,7 @@
 ```
 
 
-## 1차 Publishing
+### 1차 Publishing
 
 * Login & SignUp Screen✔️
 * Home Screen 진행중...
