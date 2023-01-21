@@ -1,21 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_me_re/common/component/custom_text_form_field.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/login_layout.dart';
 
-class SignUpScreen extends StatefulWidget {
-  SignUpScreen({super.key});
+class SignUpAuthScreen extends StatefulWidget {
+  const SignUpAuthScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignUpAuthScreen> createState() => _SignUpAuthScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
   bool isRealPoneNumber = false;
   bool isClick = false;
   bool? isRightCertifyNumber;
@@ -26,10 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool disableTime = false;
   String poneNumber = '';
   String certifyNumber = '';
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: LoginLayout(
-        hasAppBer: true,
+        hasAppBar: true,
         child: SingleChildScrollView(
           child: SafeArea(
             child: Column(
@@ -85,7 +80,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // 카운트다운 실행되는 부분 !!
                         child: Text(
                           '$authMaxCount/5',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: IMPACT_COLOR,
                             fontWeight: FontWeight.w500,
                           ),
@@ -111,13 +106,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       if (authMaxCount > 0) {
                                         --authMaxCount;
                                         ++authMinCount;
-                                        clickEvent(authMinCount);
                                       }
                                       disableTime = true;
                                       Future.delayed(
                                           // 30초 딜레이
-                                          const Duration(milliseconds: 30000),
-                                          () {
+                                          const Duration(seconds: 30), () {
                                         disableTime = false;
                                       });
                                     } else {
@@ -137,72 +130,75 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Stack(
-                  children: [
-                    CustomTextFormField(
-                      isNumber: true,
-                      isPonNumber: false,
-                      hintText: '인증번호를 입력하세요.',
-                      errorText: errorText,
-                      onChanged: (String value) {
-                        certifyNumber = value;
-                        setState(() {
-                          // api 요청
-                          print(isRightCertifyNumber);
-                          if (isRightCertifyNumber == null ||
-                              isRealPoneNumber == true) {
-                            errorText = null;
-                            return;
-                          }
-                          if (isRightCertifyNumber == false) {
-                            errorText = '인증번호를 확인해주세요.';
-                            return;
-                          }
-                        });
-                      },
-                    ),
-                    Positioned(
-                      top: 20,
-                      right: 70,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.23,
-                        height: MediaQuery.of(context).size.width * 0.10,
-                        // 카운트다운 실행되는 부분 !!
-                        child: _CountdownPage(resetCount: authMinCount),
+                if (isClick)
+                  Stack(
+                    children: [
+                      CustomTextFormField(
+                        isNumber: true,
+                        isPonNumber: false,
+                        hintText: '인증번호를 입력하세요.',
+                        errorText: errorText,
+                        onChanged: (String value) {
+                          certifyNumber = value;
+                          setState(() {
+                            // api 요청
+                            isRightCertifyNumber = false;
+                            print(isRightCertifyNumber);
+                            if (isRightCertifyNumber == null ||
+                                isRealPoneNumber == true) {
+                              errorText = null;
+                              return;
+                            }
+                            if (isRightCertifyNumber == false) {
+                              errorText = '인증번호를 확인해주세요.';
+                              return;
+                            }
+                          });
+                        },
                       ),
-                    ),
-                    Positioned(
-                      right: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      Positioned(
+                        top: 20,
+                        right: 70,
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.23,
                           height: MediaQuery.of(context).size.width * 0.10,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // api 요청 -> try catch
-                              // 인증번호가 틀렸다면 checkCertifyNumber
-                              setState(() {
-                                isRightCertifyNumber = false; // 틀렸다고 가정
-                                if (isRightCertifyNumber!) {
-                                  disableAuth = true;
-                                }
-                              });
+                          // 카운트다운 실행되는 부분 !!
 
-                              // 다 틀렸다면? 모든 것을 초기화 시키고 초기화면으로 돌아감 => 상태관리
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: StadiumBorder(),
-                              backgroundColor: PRIMARY_COLOR,
-                              disabledBackgroundColor: INPUT_BG_COLOR,
+                          child: _CountdownPage(resetCount: authMinCount),
+                        ),
+                      ),
+                      Positioned(
+                        right: 10,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.23,
+                            height: MediaQuery.of(context).size.width * 0.10,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                // api 요청 -> try catch
+                                // 인증번호가 틀렸다면 checkCertifyNumber
+                                setState(() {
+                                  isRightCertifyNumber = false; // 틀렸다고 가정
+                                  if (isRightCertifyNumber!) {
+                                    disableAuth = true;
+                                  }
+                                });
+
+                                // 다 틀렸다면? 모든 것을 초기화 시키고 초기화면으로 돌아감 => 상태관리
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                backgroundColor: PRIMARY_COLOR,
+                                disabledBackgroundColor: INPUT_BG_COLOR,
+                              ),
+                              child: const Text('확인'),
                             ),
-                            child: Text('확인'),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.75),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           : () {},
                       style: ElevatedButton.styleFrom(
                         disabledForegroundColor: Colors.black26,
-                        shape: StadiumBorder(),
+                        shape: const StadiumBorder(),
                         backgroundColor: PRIMARY_COLOR,
                         disabledBackgroundColor: INPUT_BG_COLOR,
                       ),
@@ -242,21 +238,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
-  void clickEvent(int resetCount) {
-    _CountdownPage(
-      resetCount: resetCount,
-    );
-  }
 }
 
-// 문제의 코드!!
-
-class _CountdownPage extends SignUpScreen {
-  //  00:00일 때 반환 필요
+class _CountdownPage extends StatefulWidget {
   final int resetCount;
-  _CountdownPage({
-    super.key,
+  const _CountdownPage({
     required this.resetCount,
   });
 
@@ -265,47 +251,51 @@ class _CountdownPage extends SignUpScreen {
 }
 
 class _CountdownPageState extends State<_CountdownPage> {
+  static const validTime = 180;
+  int totalSeconds = validTime;
+  bool isRunning = false;
   Timer? timer;
-  Duration duration = Duration(seconds: 180);
-  String minutesStr = '03';
-  String secondsStr = '00';
-
-  @override
-  void initState() {
-    if (widget.resetCount < 6) startTimer();
-
-    super.initState();
+  int currentNumber = 0;
+  void onTick(Timer timer) {
+    print('onTick!!!!');
+    if (totalSeconds == 0) {
+      isRunning = false;
+      timer.cancel();
+    } else {
+      setState(() {
+        totalSeconds = totalSeconds - 1;
+      });
+    }
   }
 
-  void startTimer() {
-    setState(() => Duration(seconds: 180));
-    timer = Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
-  }
-
-  void stopTimer() {
-    setState(() => timer!.cancel());
-  }
-
-  void setCountDown() {
-    final reduceSecondsBy = 1;
-
+  void onStart() {
+    totalSeconds = validTime;
+    print('onStartPressed');
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      onTick,
+    );
     setState(() {
-      int seconds = duration.inSeconds - reduceSecondsBy;
-      secondsStr = (seconds % 60).toString().padLeft(2, '0').toString();
-      minutesStr = (seconds / 60).floor().toString().padLeft(2, '0').toString();
-      if (seconds <= 0) {
-        timer!.cancel();
-      } else {
-        duration = Duration(seconds: seconds);
-      }
+      isRunning = true;
     });
+  }
+
+  String format(int seconds) {
+    var duration = Duration(seconds: seconds);
+
+    return duration.toString().split(".").first.substring(2, 7);
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentNumber < widget.resetCount && !isRunning) {
+      onStart();
+      currentNumber = widget.resetCount;
+      isRunning = false;
+    }
     return Text(
-      '$minutesStr:$secondsStr',
-      style: TextStyle(
+      format(totalSeconds),
+      style: const TextStyle(
         color: IMPACT_COLOR,
         fontWeight: FontWeight.w500,
       ),

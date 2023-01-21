@@ -7,10 +7,10 @@ class LoginLayout extends StatelessWidget {
   final Widget child;
   final Color? backgroundColor;
   final String? title;
-  final bool? hasAppBer;
+  final bool hasAppBar;
   LoginLayout({
     required this.child,
-    this.hasAppBer,
+    this.hasAppBar = false,
     this.backgroundColor,
     this.title,
     super.key,
@@ -24,7 +24,7 @@ class LoginLayout extends StatelessWidget {
         systemNavigationBarColor: Colors.white));
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
-      appBar: renderAppBar(hasAppBer!),
+      appBar: renderAppBar(hasAppBar),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: child,
@@ -33,6 +33,7 @@ class LoginLayout extends StatelessWidget {
   }
 
   AppBar? renderAppBar(bool hasAppbar) {
+    // 앱바버튼만 있는 경우
     if (hasAppbar && title == null) {
       return AppBar(
         backgroundColor: Colors.white,
@@ -46,6 +47,7 @@ class LoginLayout extends StatelessWidget {
         ),
       );
     }
+    // 앱바가 없는 경우
     if (!hasAppbar && title == null) {
       return null;
     } else {

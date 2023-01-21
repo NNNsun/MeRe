@@ -22,14 +22,14 @@ class LoginScreen extends StatelessWidget {
               title,
               height: MediaQuery.of(context).size.height * 0.027,
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             SvgPicture.asset(
               mere_logo_svg,
               height: MediaQuery.of(context).size.height * 0.063,
             ),
-            SizedBox(
+            const SizedBox(
               height: 60,
             ),
             SizedBox(
@@ -37,18 +37,18 @@ class LoginScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.height * 0.3,
               child: Image.asset(illust),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
               padding: const EdgeInsets.all(32.0),
-              child: Row(children: <Widget>[
+              child: Row(children: const <Widget>[
                 Expanded(
                     child: Divider(
                   thickness: 1,
                 )),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                  padding: EdgeInsets.symmetric(horizontal: 26.0),
                   child: Text(
                     "간편로그인",
                     style: TextStyle(
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         iconSize: 50,
                       ),
-                      Text(
+                      const Text(
                         '카카오톡',
                         style: TextStyle(
                           color: Colors.black45,
@@ -96,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         iconSize: 50,
                       ),
-                      Text(
+                      const Text(
                         '네이버',
                         style: TextStyle(
                           color: Colors.black45,
@@ -116,7 +116,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         iconSize: 50,
                       ),
-                      Text(
+                      const Text(
                         '구글',
                         style: TextStyle(
                           color: Colors.black45,

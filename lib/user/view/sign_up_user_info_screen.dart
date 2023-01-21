@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:new_me_re/common/component/custom_text_form_field.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/login_layout.dart';
 
-class SignUp2Screen extends StatefulWidget {
-  const SignUp2Screen({super.key});
+class SignUpUserInfoScreen extends StatefulWidget {
+  const SignUpUserInfoScreen({super.key});
 
   @override
-  State<SignUp2Screen> createState() => _SignUp2ScreenState();
+  State<SignUpUserInfoScreen> createState() => _SignUpUserInfoScreenState();
 }
 
 DateTime getNow() {
@@ -46,7 +44,7 @@ List getDays() {
   return days;
 }
 
-class _SignUp2ScreenState extends State<SignUp2Screen> {
+class _SignUpUserInfoScreenState extends State<SignUpUserInfoScreen> {
   @override
   void initState() {
     getYears();
@@ -59,14 +57,14 @@ class _SignUp2ScreenState extends State<SignUp2Screen> {
   Widget build(BuildContext context) {
     //final isRight = false;
     return LoginLayout(
-      hasAppBer: true,
+      hasAppBar: true,
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -79,17 +77,17 @@ class _SignUp2ScreenState extends State<SignUp2Screen> {
                   SvgPicture.asset(circle_fill_02),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 '정보까지 입력하면\n가입 완료!',
                 style: TextStyle(
                   fontSize: 28,
                 ),
               ),
               const SizedBox(height: 20.0),
-              Text('닉네임'),
+              const Text('닉네임'),
               const SizedBox(height: 8.0),
               Stack(
                 children: [
@@ -97,7 +95,7 @@ class _SignUp2ScreenState extends State<SignUp2Screen> {
                     isNumber: false,
                     isPonNumber: false,
                     hintText: '닉네임을 입력하세요.',
-                    errorText: isUnique ? null : '동일한 닉네임이 존재합니다.',
+                    errorText: isUnique ? null : '이미 존재하는 닉네임입니다.',
                     onChanged: (String value) {
                       nickName = value;
                     },
@@ -107,32 +105,38 @@ class _SignUp2ScreenState extends State<SignUp2Screen> {
                     right: 10,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.23,
-                      height: MediaQuery.of(context).size.width * 0.10,
+                      height: MediaQuery.of(context).size.width * 0.09,
                       child: ElevatedButton(
                         onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           // api 요청
+                          // 중복일 경우
+                          isUnique = true;
+                          if (isUnique) {
+                            checkNickName('이 닉네임을 사용 할텐가?');
+                          }
                         },
                         style: ElevatedButton.styleFrom(
-                          shape: StadiumBorder(),
+                          shape: const StadiumBorder(),
                           backgroundColor: PRIMARY_COLOR,
                           disabledBackgroundColor: INPUT_BG_COLOR,
                         ),
-                        child: Text('중복확인'),
+                        child: const Text('중복확인'),
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 40),
-              Text('생년월일'),
+              const Text('생년월일'),
               const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Expanded(
+                      flex: 2,
                       child: CustomDropdown(
-                          dateList: getYears(), initDate: getYears().first),
-                      flex: 2),
+                          dateList: getYears(), initDate: getYears().first)),
                   const SizedBox(width: 8.0),
                   Expanded(
                       child: CustomDropdown(
@@ -148,16 +152,61 @@ class _SignUp2ScreenState extends State<SignUp2Screen> {
                 ],
               ),
               const SizedBox(height: 40),
-              Text('성별'),
+              const Text('성별'),
               const SizedBox(height: 8.0),
               _GenderButton(),
               const SizedBox(height: 40),
-              _NextButton(),
+              const _NextButton(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void checkNickName(String str) {
+    showDialog(
+        context: context,
+        barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0)),
+            content: Text(
+              str,
+              textAlign: TextAlign.center,
+            ),
+            insetPadding: const EdgeInsets.fromLTRB(0, 80, 0, 80),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // 닫기: 상태관리
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    backgroundColor: PRIMARY_COLOR,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          '넹',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
   }
 }
 
@@ -228,14 +277,19 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    bool overlay = false;
     return GestureDetector(
       key: actionKey,
-      onTap: () => _removeOverlay(),
       child: Container(
         child: Center(
           child: InkWell(
             onTap: () {
-              _createOverlay();
+              overlay = !overlay;
+              if (overlay) {
+                _createOverlay();
+              } else {
+                _removeOverlay();
+              }
               findDropdownData();
             },
             child: CompositedTransformTarget(
@@ -254,7 +308,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
                       // 선택값.
                       Text(
                         _dropdownValue.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                         ),
                       ),
@@ -289,7 +343,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
           offset: Offset(0, height! + -4),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(8.0),
                   bottomLeft: Radius.circular(8.0)),
               border: Border.all(color: INPUT_BORDER_COLOR),
@@ -387,7 +441,7 @@ class __GenderButtonState extends State<_GenderButton> {
 
 // '가입 완료하기'Button
 class _NextButton extends StatelessWidget {
-  const _NextButton({super.key});
+  const _NextButton();
 
   @override
   Widget build(BuildContext context) {
