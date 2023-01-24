@@ -81,7 +81,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                         child: Text(
                           '$authMaxCount/5',
                           style: const TextStyle(
-                            color: IMPACT_COLOR,
+                            color: Color.fromARGB(255, 148, 18, 9),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -296,7 +296,7 @@ class _CountdownPageState extends State<_CountdownPage> {
     return Text(
       format(totalSeconds),
       style: const TextStyle(
-        color: IMPACT_COLOR,
+        color: Color.fromARGB(255, 148, 18, 9),
         fontWeight: FontWeight.w500,
       ),
     );

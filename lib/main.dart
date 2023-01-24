@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:new_me_re/user/view/sign_up_auth_screen.dart';
+import 'package:new_me_re/common/view/root_tab.dart';
 
 void main() {
   runApp(const _App());
@@ -21,9 +21,10 @@ class _App extends StatelessWidget {
       //   visualDensity: VisualDensity.adaptivePlatformDensity,
       // ),
       //routerConfig: router,
-      home: SignUpAuthScreen(),
-      //SignUpUserInfoScreen(),
 
+      home: const RootTab(),
+      //SignUpUserInfoScreen(),
+      //  SignUpAuthScreen(),
       //LoginScreen(),
     );
   }
