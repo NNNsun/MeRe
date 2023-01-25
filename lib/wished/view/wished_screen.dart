@@ -6,8 +6,6 @@ class WishedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      child: Container(),
-    );
+    return const DefaultLayout(child: Center(child: Text('관심매장')));
   }
 }

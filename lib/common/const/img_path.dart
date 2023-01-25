@@ -1,7 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/avd.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 const illust = 'asset/img/logo/illust.png';
 const google = 'asset/svg/icon/login/google.svg';
 const kakao = 'asset/svg/icon/login/kakao.svg';
@@ -14,3 +10,11 @@ const circle_02 = 'asset/svg/icon/sign_up/circle_02.svg';
 const dots = 'asset/svg/icon/sign_up/dots.svg';
 const circle_fill_02 = 'asset/svg/icon/sign_up/circle_fill_02.svg';
 const circle_check = 'asset/svg/icon/sign_up/circle_check.svg';
+const history_acti = 'asset/png/icon/root/history_acti.png';
+const history_deacti = 'asset/png/icon/root/history_deacti.png';
+const home_acti = 'asset/png/icon/root/home_acti.png';
+const home_deacti = 'asset/png/icon/root/home_deacti.png';
+const my_acti = 'asset/png/icon/root/my_acti.png';
+const my_deacti = 'asset/png/icon/root/my_deacti.png';
+const point_acti = 'asset/png/icon/root/point_acti.png';
+const point_deacti = 'asset/png/icon/root/point_deacti.png';

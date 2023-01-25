@@ -21,6 +21,10 @@ class DefaultLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarIconBrightness: Brightness.light,
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.white));
     return Scaffold(
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(),
@@ -40,7 +44,7 @@ class DefaultLayout extends StatelessWidget {
         centerTitle: true,
         title: Text(
           title!,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="17" viewBox="0 0 18 17">
+  <g id="그룹_333" data-name="그룹 333" transform="translate(-418 -75)">
+    <g id="타원_2" data-name="타원 2" transform="translate(418 75)" fill="none" stroke="#fff" stroke-width="1.5">
+      <ellipse cx="9" cy="8.5" rx="9" ry="8.5" stroke="none"/>
+      <ellipse cx="9" cy="8.5" rx="8.25" ry="7.75" fill="none"/>
+    </g>
+    <path id="패스_17" data-name="패스 17" d="M4.312-6.876A3.26,3.26,0,0,1,7.8-3.763,3.254,3.254,0,0,1,4.312-.591H2.655V2.886H.846V-6.876ZM2.655-5.455v3.419h1.68A1.592,1.592,0,0,0,5.9-3.763,1.561,1.561,0,0,0,4.335-5.455Z" transform="translate(423.75 86.109)" fill="#fff"/>
+  </g>
+</svg>

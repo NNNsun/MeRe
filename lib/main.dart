@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:new_me_re/common/view/root_tab.dart';
+import 'package:new_me_re/common/view/root.dart';
 
 void main() {
   runApp(const _App());
@@ -22,7 +22,7 @@ class _App extends StatelessWidget {
       // ),
       //routerConfig: router,
 
-      home: const RootTab(),
+      home: const Root(),
       //SignUpUserInfoScreen(),
       //  SignUpAuthScreen(),
       //LoginScreen(),
