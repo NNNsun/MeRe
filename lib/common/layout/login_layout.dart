@@ -8,7 +8,7 @@ class LoginLayout extends StatelessWidget {
   final Color? backgroundColor;
   final String? title;
   final bool hasAppBar;
-  LoginLayout({
+  const LoginLayout({
     required this.child,
     this.hasAppBar = false,
     this.backgroundColor,
@@ -64,7 +64,7 @@ class LoginLayout extends StatelessWidget {
         ),
         title: Text(
           title!,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),

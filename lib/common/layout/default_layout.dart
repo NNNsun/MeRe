@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+
+import '../const/img_path.dart';
 
 class DefaultLayout extends StatelessWidget {
   final Color? backgroundColor;
@@ -39,6 +42,12 @@ class DefaultLayout extends StatelessWidget {
       return null;
     } else {
       return AppBar(
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            back_btn,
+          ),
+          onPressed: () {},
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,

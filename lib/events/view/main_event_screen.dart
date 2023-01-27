@@ -4,13 +4,13 @@ import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/home/view/top_left_menu_screen.dart';
 import 'package:new_me_re/home/view/top_right_menu_screen.dart';
 
-class MainAdverScreen extends StatefulWidget {
-  const MainAdverScreen({super.key});
+class MainEventScreen extends StatefulWidget {
+  const MainEventScreen({super.key});
   @override
-  State<MainAdverScreen> createState() => _MainAdverScreenState();
+  State<MainEventScreen> createState() => _MainEventScreenState();
 }
 
-class _MainAdverScreenState extends State<MainAdverScreen> {
+class _MainEventScreenState extends State<MainEventScreen> {
   CarouselController carouselController = CarouselController();
 
   //메인 광고리스트
