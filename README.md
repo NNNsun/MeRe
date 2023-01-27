@@ -8,4 +8,5 @@
 ### 1차 Publishing
 
 * Login & SignUp Screen✔️
-* Home Screen 진행중...
+* Home Screen ✔️
+* Alarm Screen 진행중...
