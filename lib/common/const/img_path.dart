@@ -18,3 +18,5 @@ const my_acti = 'asset/png/icon/root/my_acti.png';
 const my_deacti = 'asset/png/icon/root/my_deacti.png';
 const point_acti = 'asset/png/icon/root/point_acti.png';
 const point_deacti = 'asset/png/icon/root/point_deacti.png';
+const coupon_icon = 'asset/svg/icon/component/coupon_icon.svg';
+const discount_icon = 'asset/svg/icon/component/discount_icon.svg';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // 주색상
 const PRIMARY_COLOR = Color.fromARGB(255, 255, 74, 74);
 // 주색상 밝은 버전
-const PRIMARY_LIGTH_COLOR = Color.fromARGB(255, 253, 219, 219);
+const PRIMARY_LIGHT_COLOR = Color.fromARGB(255, 253, 219, 219);
 // 주색상 어두운 버전
 const PRIMARY_Dark_COLOR = Color.fromARGB(255, 213, 18, 18);
 // 글자 색상 1. 블랙
