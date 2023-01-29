@@ -9,4 +9,4 @@
 
 * Login & SignUp Screen✔️
 * Home Screen ✔️
-* Alarm Screen 진행중...
+* Alarm Screen ✔️
