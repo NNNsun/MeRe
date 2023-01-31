@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:new_me_re/alarm/view/alarm_screen.dart';
-import 'package:new_me_re/common/view/root.dart';
+
+import 'common/view/root.dart';
 
 void main() {
   runApp(const _App());
@@ -23,8 +23,11 @@ class _App extends StatelessWidget {
       // ),
       //routerConfig: router,
 
-      home: const AlarmScreen(),
-      // const Root(),
+      home: const Root(),
+      // const AlarmScreen(),
+
+      //const OrderScreen()
+
       //SignUpUserInfoScreen(),
       //  SignUpAuthScreen(),
       //LoginScreen(),

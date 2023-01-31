@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="26" viewBox="0 0 52 26">
+  <g id="그룹_564" data-name="그룹 564" transform="translate(-198 -1038)">
+    <g id="사각형_1873" data-name="사각형 1873" transform="translate(198 1038)" fill="none" stroke="#fa9300" stroke-width="1">
+      <rect width="52" height="26" rx="13" stroke="none"/>
+      <rect x="0.5" y="0.5" width="51" height="25" rx="12.5" fill="none"/>
+    </g>
+    <text id="보통" transform="translate(210 1055)" fill="#fa9300" font-size="15" font-family="YoonGothic760, 'YoonGothic \37 00'"><tspan x="0" y="0">보통</tspan></text>
+  </g>
+</svg>

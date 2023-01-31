@@ -11,6 +11,7 @@ class DefaultLayout extends StatelessWidget {
   final Widget? bottomNavigationBar;
   final Widget? floatingActionButton;
   final bool stateBar;
+  final bool leading;
 
   const DefaultLayout({
     required this.child,
@@ -20,6 +21,7 @@ class DefaultLayout extends StatelessWidget {
     this.floatingActionButton,
     this.stateBar = true,
     Key? key,
+    this.leading = true,
   }) : super(key: key);
 
   @override
@@ -42,12 +44,14 @@ class DefaultLayout extends StatelessWidget {
       return null;
     } else {
       return AppBar(
-        leading: IconButton(
-          icon: SvgPicture.asset(
-            back_btn,
-          ),
-          onPressed: () {},
-        ),
+        leading: leading
+            ? IconButton(
+                icon: SvgPicture.asset(
+                  back_btn,
+                ),
+                onPressed: () {},
+              )
+            : null,
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,

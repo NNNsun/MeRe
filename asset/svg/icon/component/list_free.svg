@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="26" viewBox="0 0 52 26">
+  <g id="그룹_565" data-name="그룹 565" transform="translate(-306 -1432)">
+    <g id="사각형_1817" data-name="사각형 1817" transform="translate(306 1432)" fill="none" stroke="#296bff" stroke-width="1">
+      <rect width="52" height="26" rx="13" stroke="none"/>
+      <rect x="0.5" y="0.5" width="51" height="25" rx="12.5" fill="none"/>
+    </g>
+    <text id="여유" transform="translate(318 1450)" fill="#296bff" font-size="15" font-family="YoonGothic760, 'YoonGothic \37 00'"><tspan x="0" y="0">여유</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="52" height="26" viewBox="0 0 52 26">
+  <g id="그룹_563" data-name="그룹 563" transform="translate(-198 -621)">
+    <g id="사각형_1803" data-name="사각형 1803" transform="translate(198 621)" fill="none" stroke="#d51212" stroke-width="1">
+      <rect width="52" height="26" rx="13" stroke="none"/>
+      <rect x="0.5" y="0.5" width="51" height="25" rx="12.5" fill="none"/>
+    </g>
+    <text id="혼잡" transform="translate(210 638)" fill="#d51212" font-size="15" font-family="YoonGothic760, 'YoonGothic \37 00'"><tspan x="0" y="0">혼잡</tspan></text>
+  </g>
+</svg>
