@@ -10,3 +10,4 @@
 * Login & SignUp Screen✔️
 * Home Screen ✔️
 * Alarm Screen ✔️
+* StoreList Screen ✔️
