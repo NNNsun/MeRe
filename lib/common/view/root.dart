@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/history/view/history_screen.dart';
 import 'package:new_me_re/home/view/home_screen.dart';
-import 'package:new_me_re/order/view/order_screen.dart';
+import 'package:new_me_re/order/view/store_list_screen.dart';
 import 'package:new_me_re/setting/screen/setting_screen.dart';
 import 'package:new_me_re/wished/view/wished_screen.dart';
 
@@ -38,7 +38,7 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
 //이동할 page 모음(인덱스 순으로 이동)
   final List<Widget> _widgetOptions = [
     const HomeScreen(),
-    const OrderScreen(),
+    const StoreListScreen(),
     const WishedScreen(),
     const HistoryScreen(),
     const SettingScreen(),
