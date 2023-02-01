@@ -30,12 +30,14 @@ class DefaultLayout extends StatelessWidget {
         statusBarIconBrightness: Brightness.light,
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.white));
-    return Scaffold(
-      backgroundColor: backgroundColor ?? Colors.white,
-      appBar: renderAppBar(),
-      body: child,
-      bottomNavigationBar: bottomNavigationBar,
-      floatingActionButton: floatingActionButton,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: backgroundColor ?? Colors.white,
+        appBar: renderAppBar(),
+        body: child,
+        bottomNavigationBar: bottomNavigationBar,
+        floatingActionButton: floatingActionButton,
+      ),
     );
   }
 

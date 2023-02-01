@@ -10,6 +10,7 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final bool isPonNumber;
   final bool isNumber;
+  final TextEditingController? controller;
 
   const CustomTextFormField({
     required this.onChanged,
@@ -20,12 +21,13 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.errorText,
     Key? key,
+    this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final baseBorder = OutlineInputBorder(
-      borderSide: BorderSide(
+      borderSide: const BorderSide(
         color: INPUT_BORDER_COLOR,
         width: 1.0,
       ),
@@ -33,6 +35,7 @@ class CustomTextFormField extends StatelessWidget {
     );
 
     return TextFormField(
+      controller: controller,
       cursorColor: PRIMARY_COLOR,
       keyboardType:
           isPonNumber || isNumber ? TextInputType.number : TextInputType.text,
@@ -49,10 +52,10 @@ class CustomTextFormField extends StatelessWidget {
             : LengthLimitingTextInputFormatter(10),
       ],
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.all(20),
+        contentPadding: const EdgeInsets.all(20),
         hintText: hintText,
         errorText: errorText,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           color: Colors.black26,
           fontSize: 14.0,
         ),

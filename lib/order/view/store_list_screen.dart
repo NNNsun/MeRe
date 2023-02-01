@@ -42,7 +42,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
       // 한번에 담는법...ㅜㅜ
       storeList.add(StoreListCard(
           id: i.toString(),
-          title: '러블랑',
+          title: '비둘기는멍청해보여요',
           congestion: congestion,
           rating: (i % 5).toString(),
           isSale: isSale,
@@ -121,7 +121,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
   Wrap makeChip() {
     String title = '';
     return Wrap(
-      spacing: 5.0,
+      spacing: 8.0,
       children: List<Widget>.generate(
         3,
         (int index) {
@@ -133,6 +133,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
             title = '별점순';
           }
           return ChoiceChip(
+            pressElevation: 0,
             selectedColor: const Color.fromARGB(255, 255, 244, 244),
             shape: StadiumBorder(
                 side: BorderSide(

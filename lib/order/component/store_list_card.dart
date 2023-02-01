@@ -6,7 +6,7 @@ import 'package:new_me_re/common/const/img_path.dart';
 
 class StoreListCard extends StatelessWidget {
   final String id;
-  final String title;
+  final String title; // 글자 수 제한
   final String congestion;
   final String rating;
   final bool isSale;
@@ -65,7 +65,6 @@ class StoreListCard extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 3),
                     child: AutoSizeText(
                       maxLines: 1,
-                      maxFontSize: 18,
                       title,
                       style: const TextStyle(
                         fontSize: 18,
@@ -74,7 +73,7 @@ class StoreListCard extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    padding: const EdgeInsets.only(left: 8),
                     child: SvgPicture.asset(
                       congestionIcon, // 기본 = '보통'
                       height: MediaQuery.of(context).size.height * 0.03,

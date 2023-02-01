@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:new_me_re/common/component/custom_text_form_field.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
@@ -23,8 +24,21 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
   String? errorText;
   bool disableAuth = false;
   bool disableTime = false;
+
+  // TextField 부분
   String poneNumber = '';
   String certifyNumber = '';
+  var myController = TextEditingController();
+  createErrorText() {
+    String errorText = '';
+    if (isRightCertifyNumber == null || isRightCertifyNumber == true) {
+      return null;
+    }
+    if (isRightCertifyNumber == false) {
+      errorText = '인증번호를 확인해주세요.';
+    }
+    return errorText;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +82,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                       onChanged: (String value) {
                         setState(() {
                           poneNumber = value;
+                          print(poneNumber);
                         });
                       },
                     ),
@@ -81,7 +96,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                         child: Text(
                           '$authMaxCount/5',
                           style: const TextStyle(
-                            color: Color.fromARGB(255, 148, 18, 9),
+                            color: PRIMARY_Dark_COLOR,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -101,6 +116,8 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                               ? null
                               : () {
                                   setState(() {
+                                    print('인증하기 click');
+
                                     if (poneNumber.length == 13) {
                                       isClick = true;
                                       if (authMaxCount > 0) {
@@ -111,11 +128,14 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                                       Future.delayed(
                                           // 30초 딜레이
                                           const Duration(seconds: 30), () {
-                                        disableTime = false;
+                                        setState(() {
+                                          disableTime = false;
+                                        });
                                       });
                                     } else {
                                       isClick = false;
                                     }
+                                    // 해당 전화번호 기기로 인증번호 전송
                                   });
                                 },
                           style: ElevatedButton.styleFrom(
@@ -137,23 +157,9 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                         isNumber: true,
                         isPonNumber: false,
                         hintText: '인증번호를 입력하세요.',
-                        errorText: errorText,
+                        errorText: createErrorText(),
                         onChanged: (String value) {
                           certifyNumber = value;
-                          setState(() {
-                            // api 요청
-                            isRightCertifyNumber = false;
-                            print(isRightCertifyNumber);
-                            if (isRightCertifyNumber == null ||
-                                isRealPoneNumber == true) {
-                              errorText = null;
-                              return;
-                            }
-                            if (isRightCertifyNumber == false) {
-                              errorText = '인증번호를 확인해주세요.';
-                              return;
-                            }
-                          });
                         },
                       ),
                       Positioned(
@@ -163,7 +169,6 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                           width: MediaQuery.of(context).size.width * 0.23,
                           height: MediaQuery.of(context).size.width * 0.10,
                           // 카운트다운 실행되는 부분 !!
-
                           child: _CountdownPage(resetCount: authMinCount),
                         ),
                       ),
@@ -176,14 +181,22 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                             height: MediaQuery.of(context).size.width * 0.10,
                             child: ElevatedButton(
                               onPressed: () {
-                                // api 요청 -> try catch
                                 // 인증번호가 틀렸다면 checkCertifyNumber
+                                print('확인 click');
                                 setState(() {
-                                  isRightCertifyNumber = false; // 틀렸다고 가정
+                                  // api 요청 -> try catch
+                                  // certifyNumber
+                                  isRightCertifyNumber = true; // 확인 가정하는 부분
                                   if (isRightCertifyNumber!) {
-                                    disableAuth = true;
+                                    showToast();
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
                                   }
                                 });
+
+                                if (isRightCertifyNumber!) {
+                                  disableAuth = true;
+                                }
 
                                 // 다 틀렸다면? 모든 것을 초기화 시키고 초기화면으로 돌아감 => 상태관리
                               },
@@ -230,7 +243,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -238,6 +251,17 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
       ),
     );
   }
+}
+
+void showToast() {
+  Fluttertoast.showToast(
+      msg: "😊 인증되었습니다",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: PRIMARY_COLOR.withOpacity(0.5),
+      textColor: Colors.white,
+      fontSize: 14.0);
 }
 
 class _CountdownPage extends StatefulWidget {
@@ -251,10 +275,10 @@ class _CountdownPage extends StatefulWidget {
 }
 
 class _CountdownPageState extends State<_CountdownPage> {
-  static const validTime = 180;
+  static const validTime = 300;
   int totalSeconds = validTime;
   bool isRunning = false;
-  Timer? timer;
+
   int currentNumber = 0;
   void onTick(Timer timer) {
     print('onTick!!!!');
@@ -271,7 +295,7 @@ class _CountdownPageState extends State<_CountdownPage> {
   void onStart() {
     totalSeconds = validTime;
     print('onStartPressed');
-    timer = Timer.periodic(
+    Timer? timer = Timer.periodic(
       const Duration(seconds: 1),
       onTick,
     );
@@ -296,7 +320,7 @@ class _CountdownPageState extends State<_CountdownPage> {
     return Text(
       format(totalSeconds),
       style: const TextStyle(
-        color: Color.fromARGB(255, 148, 18, 9),
+        color: PRIMARY_Dark_COLOR,
         fontWeight: FontWeight.w500,
       ),
     );
