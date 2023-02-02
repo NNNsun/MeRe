@@ -126,8 +126,8 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                                       }
                                       disableTime = true;
                                       Future.delayed(
-                                          // 30초 딜레이
-                                          const Duration(seconds: 30), () {
+                                          // 10초 딜레이
+                                          const Duration(seconds: 10), () {
                                         setState(() {
                                           disableTime = false;
                                         });
@@ -186,9 +186,15 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                                 setState(() {
                                   // api 요청 -> try catch
                                   // certifyNumber
-                                  isRightCertifyNumber = true; // 확인 가정하는 부분
+                                  if (isRightCertifyNumber == true) {
+                                    showToast(msg: "이미 인증되었습니다");
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    return;
+                                  }
+                                  isRightCertifyNumber = false; // 확인 가정하는 부분
                                   if (isRightCertifyNumber!) {
-                                    showToast();
+                                    showToast(msg: "😊 인증되었습니다");
                                     FocusManager.instance.primaryFocus
                                         ?.unfocus();
                                   }
@@ -253,9 +259,11 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
   }
 }
 
-void showToast() {
+void showToast({
+  String msg = '',
+}) {
   Fluttertoast.showToast(
-      msg: "😊 인증되었습니다",
+      msg: msg,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
@@ -278,7 +286,7 @@ class _CountdownPageState extends State<_CountdownPage> {
   static const validTime = 300;
   int totalSeconds = validTime;
   bool isRunning = false;
-
+  Timer? timer;
   int currentNumber = 0;
   void onTick(Timer timer) {
     print('onTick!!!!');
@@ -295,7 +303,7 @@ class _CountdownPageState extends State<_CountdownPage> {
   void onStart() {
     totalSeconds = validTime;
     print('onStartPressed');
-    Timer? timer = Timer.periodic(
+    timer = Timer.periodic(
       const Duration(seconds: 1),
       onTick,
     );

@@ -31,6 +31,7 @@ class DefaultLayout extends StatelessWidget {
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.white));
     return SafeArea(
+      top: false,
       child: Scaffold(
         backgroundColor: backgroundColor ?? Colors.white,
         appBar: renderAppBar(),

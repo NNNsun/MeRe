@@ -38,8 +38,8 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
 //이동할 page 모음(인덱스 순으로 이동)
   final List<Widget> _widgetOptions = [
     const HomeScreen(),
-    const StoreListScreen(),
     const WishedScreen(),
+    const StoreListScreen(),
     const HistoryScreen(),
     const SettingScreen(),
   ];
@@ -68,20 +68,20 @@ class _RootState extends State<Root> with SingleTickerProviderStateMixin {
                     : Image.asset(home_deacti)),
             Tab(
                 icon: _selectedIndex == 1
-                    ? Image.asset(home_acti)
-                    : Image.asset(home_deacti)),
+                    ? Image.asset(heart_acti)
+                    : Image.asset(heart_deacti)),
             Tab(
                 icon: _selectedIndex == 2
-                    ? Image.asset(point_acti)
-                    : Image.asset(point_deacti)),
+                    ? Image.asset(order_acti)
+                    : Image.asset(order_deacti)),
             Tab(
                 icon: _selectedIndex == 3
                     ? Image.asset(history_acti)
                     : Image.asset(history_deacti)),
             Tab(
                 icon: _selectedIndex == 4
-                    ? Image.asset(my_acti)
-                    : Image.asset(my_deacti)),
+                    ? Image.asset(setting_acti)
+                    : Image.asset(setting_deacti)),
           ],
           indicatorColor: Colors.transparent,
         ),
