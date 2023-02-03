@@ -33,3 +33,6 @@ const cart_btn = 'asset/svg/icon/component/cart_btn.svg';
 const home_btn = 'asset/svg/icon/component/home_btn.svg';
 const hashtag_btn = 'asset/svg/icon/component/hashtag_btn.svg';
 const red_star_icon = 'asset/svg/icon/component/red_star_icon.svg';
+const call_icon = 'asset/svg/icon/component/call_icon.svg';
+const share_icon = 'asset/svg/icon/component/share_icon.svg';
+const store_heart_icon = 'asset/svg/icon/component/store_heart_icon.svg';
