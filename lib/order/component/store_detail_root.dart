@@ -2,6 +2,8 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:new_me_re/common/const/img_path.dart';
+import 'package:new_me_re/order/widget/custom_chip_widget.dart';
+import 'package:new_me_re/order/widget/tag_card_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../common/const/color.dart';
@@ -14,56 +16,97 @@ class StoreDetailRoot extends StatefulWidget {
 }
 
 class _StoreDetailRootState extends State<StoreDetailRoot> {
+  var top = 0.0;
+  var pageController = PageController();
+
   @override
   Widget build(BuildContext context) {
-    var pageController = PageController();
+    double minBarSize = MediaQuery.of(context).padding.top + kToolbarHeight;
+    Size size = MediaQuery.of(context).size;
+    double imageHeight = size.height * 0.3 + kToolbarHeight;
 
-    return LayoutBuilder(
-      builder: (context, contains) {
-        Size size = MediaQuery.of(context).size;
-        double imageHeight = size.height * 0.3 + kToolbarHeight;
-
-        return Scaffold(
-            body: DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                storeDetailAppBar(size, imageHeight, pageController),
-                SliverPersistentHeader(
-                  delegate: SliverDelegate(const TabBar(
-                    tabs: [
-                      Tab(icon: Icon(Icons.grid_on)),
-                      Tab(icon: Icon(Icons.grid_on)),
-                      Tab(icon: Icon(Icons.grid_on)),
-                    ],
-                    indicatorColor: Colors.blue,
-                    unselectedLabelColor: Colors.grey,
-                    labelColor: Colors.black,
-                  )),
-                  floating: true,
-                  pinned: true,
-                ),
-              ];
-            },
-            body: TabBarView(children: [Container(), Container(), Container()]),
-          ),
-        ));
-      },
-    );
+    return Scaffold(
+        body: DefaultTabController(
+            length: 3,
+            child: NestedScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  storeDetailAppBar(size, imageHeight, pageController),
+                  const SliverPersistentHeader(delegate: TabBarDelegate())
+                ];
+              },
+              body: Container(),
+            )));
   }
+}
 
-  SliverAppBar storeDetailAppBar(
-      Size size, double imageHeight, PageController controller) {
-    return SliverAppBar(
-      floating: false,
-      primary: true,
-      pinned: true,
-      expandedHeight: size.height * 0.58,
-      flexibleSpace: Stack(
+SliverAppBar storeDetailAppBar(
+    Size size, double imageHeight, PageController controller) {
+  var top = 0.0;
+  bool isFit = false;
+  // 앱바 가장 큰 사이즈
+  double maxBarSize = size.height * 0.58;
+  return SliverAppBar(
+    backgroundColor: Colors.white,
+    elevation: 0.0,
+    floating: false,
+    primary: true,
+    pinned: true,
+    expandedHeight: maxBarSize,
+    flexibleSpace: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      // 앱바 가장 작은 사이즈
+      double minBarSize = MediaQuery.of(context).padding.top + kToolbarHeight;
+      top = constraints.biggest.height;
+      if (top == minBarSize) {
+        isFit = true;
+      } else {
+        isFit = false;
+      }
+      return Stack(
         children: [
           FlexibleSpaceBar(
+            title: isFit
+                ? AppBar(
+                    backgroundColor: Colors.white,
+                    title: const Text(
+                      '온어데일리',
+                      style: TextStyle(color: Colors.black, fontSize: 18),
+                    ),
+                    centerTitle: true,
+                    elevation: 0.0,
+                    leading: IconButton(
+                      icon: SvgPicture.asset(back_btn),
+                      onPressed: () {},
+                    ),
+                    actions: [
+                      GestureDetector(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: SvgPicture.asset(
+                            home_btn,
+                            color: Colors.black,
+                            height: 24,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: SvgPicture.asset(
+                            cart_btn,
+                            color: Colors.black,
+                            height: 24,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : null,
+            centerTitle: true,
             background: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -110,11 +153,11 @@ class _StoreDetailRootState extends State<StoreDetailRoot> {
                             //list.builder로 만들기
                             Row(
                               children: const [
-                                TagCard(title: '애견동반'),
-                                TagCard(title: '노키즈존'),
+                                TagCardWidget(title: '애견동반'),
+                                TagCardWidget(title: '노키즈존'),
                               ],
                             ),
-                            const CustomChip(title: '혼잡', timeTaken: 20),
+                            const CustomChipWidget(title: '여유', timeTaken: 20),
                           ]),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 4),
@@ -136,13 +179,21 @@ class _StoreDetailRootState extends State<StoreDetailRoot> {
                                 fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(width: 10),
-                          SvgPicture.asset(location_icon, height: 14),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Text(
-                              '경북경산시 청운로 12',
-                              style: TextStyle(
-                                  fontSize: 16, color: IMPACT_COLOR_DARK_GRAY),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(location_icon, height: 14),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 4),
+                                  child: Text(
+                                    '경북경산시 청운로 12',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: IMPACT_COLOR_DARK_GRAY),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const Padding(
@@ -271,46 +322,26 @@ class _StoreDetailRootState extends State<StoreDetailRoot> {
           ),
           renderTitleBlur()
         ],
-      ),
-      actions: [
-        IconButton(
-          icon: SvgPicture.asset(home_btn, color: Colors.white),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: SvgPicture.asset(cart_btn, color: Colors.white),
-          onPressed: () {},
-        ),
-      ],
-      backgroundColor: Colors.white,
-      leading: IconButton(
-        icon: SvgPicture.asset(back_btn, color: Colors.white),
-        onPressed: () {},
-      ),
-      title: const Text(
-        '온어데일리',
-        style: TextStyle(color: Colors.white, fontSize: 18),
-      ),
-      centerTitle: true,
-    );
-  }
+      );
+    }),
+  );
+}
 
-  SizedBox renderTitleBlur() {
-    return SizedBox(
-      height: 100,
-      child: FlexibleSpaceBar(
-        collapseMode: CollapseMode.none,
-        background: Container(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.black38, Colors.transparent],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: [0.0, 0.15])),
-        ),
+SizedBox renderTitleBlur() {
+  return SizedBox(
+    height: 100,
+    child: FlexibleSpaceBar(
+      collapseMode: CollapseMode.none,
+      background: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.black38, Colors.transparent],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0.0, 0.15])),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class SliverDelegate extends SliverPersistentHeaderDelegate {
@@ -336,75 +367,58 @@ class SliverDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-class CustomChip extends StatelessWidget {
-  final String title;
-  final int timeTaken;
-
-  const CustomChip({
-    required this.title,
-    required this.timeTaken,
-    Key? key,
-  }) : super(key: key);
+class TabBarDelegate extends SliverPersistentHeaderDelegate {
+  const TabBarDelegate();
 
   @override
-  Widget build(BuildContext context) {
-    Color color = Colors.transparent;
-    if (title == '여유') {
-      color = Colors.blue;
-    } else if (title == '보통') {
-      color = Colors.orange;
-    } else if (title == '혼잡') {
-      color = Colors.red;
-    }
-
-    return Row(
-      children: [
-        Chip(
-            label: Text(
-              title,
-              style: TextStyle(fontSize: 12, color: color),
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      height: 50,
+      color: Colors.white,
+      child: TabBar(
+        tabs: [
+          Tab(
+            child: Container(
+              color: Colors.white,
+              child: const Text(
+                "메뉴",
+              ),
             ),
-            backgroundColor: Colors.white,
-            shape: StadiumBorder(side: BorderSide(color: color)),
-            visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4)),
-        const SizedBox(width: 4),
-        Chip(
-            label: Text(
-              'TAKETIME $timeTaken분',
-              style: TextStyle(fontSize: 12, color: color),
+          ),
+          Tab(
+            child: Container(
+              color: Colors.white,
+              child: const Text(
+                "정보",
+              ),
             ),
-            backgroundColor: Colors.white,
-            shape: StadiumBorder(side: BorderSide(color: color)),
-            visualDensity: const VisualDensity(horizontal: 0.0, vertical: -4)),
-      ],
+          ),
+          Tab(
+            child: Container(
+              color: Colors.white,
+              child: const Text(
+                "리뷰",
+              ),
+            ),
+          ),
+        ],
+        indicatorWeight: 2,
+        unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
+        labelColor: PRIMARY_COLOR,
+        indicatorColor: PRIMARY_COLOR,
+      ),
     );
   }
-}
-
-class TagCard extends StatelessWidget {
-  final String title;
-  const TagCard({
-    required this.title,
-    Key? key,
-  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 6),
-      child: Stack(children: [
-        SvgPicture.asset(
-          hashtag_btn,
-        ),
-        Positioned.fill(
-            child: Align(
-          alignment: Alignment.center,
-          child: Text(
-            '#$title',
-            style: const TextStyle(color: IMPACT_COLOR_DARK_GRAY, fontSize: 12),
-          ),
-        )),
-      ]),
-    );
+  double get maxExtent => 50;
+
+  @override
+  double get minExtent => 50;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
