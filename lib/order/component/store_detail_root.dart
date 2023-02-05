@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:new_me_re/common/component/custom_appbar.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/order/widget/custom_chip_widget.dart';
 import 'package:new_me_re/order/widget/tag_card_widget.dart';
@@ -15,9 +16,25 @@ class StoreDetailRoot extends StatefulWidget {
   State<StoreDetailRoot> createState() => _StoreDetailRootState();
 }
 
-class _StoreDetailRootState extends State<StoreDetailRoot> {
+class _StoreDetailRootState extends State<StoreDetailRoot>
+    with TickerProviderStateMixin {
   var top = 0.0;
+
   var pageController = PageController();
+  late TabController _tabController;
+  late TabController _menuTabController;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: 3);
+    _menuTabController = TabController(vsync: this, length: 3);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +43,79 @@ class _StoreDetailRootState extends State<StoreDetailRoot> {
     double imageHeight = size.height * 0.3 + kToolbarHeight;
 
     return Scaffold(
-        body: DefaultTabController(
-            length: 3,
-            child: NestedScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  storeDetailAppBar(size, imageHeight, pageController),
-                  const SliverPersistentHeader(delegate: TabBarDelegate())
-                ];
+      body: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              storeDetailAppBar(size, imageHeight, pageController),
+              SliverOverlapAbsorber(
+                handle:
+                    NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                sliver: SliverPersistentHeader(
+                  delegate: TabBarDelegate(tabController: _tabController),
+                  pinned: true,
+                ),
+              ),
+            ];
+          },
+          body: TabBarView(controller: _tabController, children: [
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                top = size.height - constraints.biggest.height;
+                print(top);
+                return Column(
+                  children: [
+                    SizedBox(height: top == 0 ? minBarSize + 50 : 50),
+                    Container(
+                        color: Colors.white,
+                        alignment: Alignment.topLeft,
+                        child: TabBar(
+                            indicatorWeight: 2,
+                            unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
+                            labelColor: Colors.green,
+                            indicatorColor: Colors.green,
+                            tabs: [
+                              Tab(
+                                child: Container(
+                                  color: Colors.white,
+                                  child: const Text(
+                                    "전체",
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Container(
+                                  color: Colors.white,
+                                  child: const Text(
+                                    "시그니처",
+                                  ),
+                                ),
+                              ),
+                              Tab(
+                                child: Container(
+                                  color: Colors.white,
+                                  child: const Text(
+                                    "메뉴",
+                                  ),
+                                ),
+                              ),
+                            ])),
+                  ],
+                );
               },
-              body: Container(),
-            )));
+            ),
+            Container(
+              color: Colors.redAccent,
+            ),
+            Container(
+              color: Colors.blue,
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }
 
@@ -48,6 +126,7 @@ SliverAppBar storeDetailAppBar(
   // 앱바 가장 큰 사이즈
   double maxBarSize = size.height * 0.58;
   return SliverAppBar(
+    stretch: false,
     backgroundColor: Colors.white,
     elevation: 0.0,
     floating: false,
@@ -68,42 +147,10 @@ SliverAppBar storeDetailAppBar(
         children: [
           FlexibleSpaceBar(
             title: isFit
-                ? AppBar(
+                ? CustomAppBar(
+                    color: Colors.black,
                     backgroundColor: Colors.white,
-                    title: const Text(
-                      '온어데일리',
-                      style: TextStyle(color: Colors.black, fontSize: 18),
-                    ),
-                    centerTitle: true,
-                    elevation: 0.0,
-                    leading: IconButton(
-                      icon: SvgPicture.asset(back_btn),
-                      onPressed: () {},
-                    ),
-                    actions: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: SvgPicture.asset(
-                            home_btn,
-                            color: Colors.black,
-                            height: 24,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: SvgPicture.asset(
-                            cart_btn,
-                            color: Colors.black,
-                            height: 24,
-                          ),
-                        ),
-                      ),
-                    ],
+                    title: '온어데일리',
                   )
                 : null,
             centerTitle: true,
@@ -138,7 +185,7 @@ SliverAppBar storeDetailAppBar(
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ]),
                 ),
                 const SizedBox(height: 20),
@@ -320,7 +367,12 @@ SliverAppBar storeDetailAppBar(
               ],
             ),
           ),
-          renderTitleBlur()
+          renderTitleBlur(),
+          if (!isFit)
+            CustomAppBar(
+              color: Colors.white,
+              backgroundColor: Colors.transparent,
+            )
         ],
       );
     }),
@@ -368,8 +420,10 @@ class SliverDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class TabBarDelegate extends SliverPersistentHeaderDelegate {
-  const TabBarDelegate();
-
+  final TabController? tabController;
+  TabBarDelegate({
+    this.tabController,
+  });
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -377,6 +431,7 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
       height: 50,
       color: Colors.white,
       child: TabBar(
+        controller: tabController,
         tabs: [
           Tab(
             child: Container(
