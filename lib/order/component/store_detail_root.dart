@@ -1,3 +1,4 @@
+import 'package:anchor_tabs/anchor_tabs.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -41,7 +42,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
     double minBarSize = MediaQuery.of(context).padding.top + kToolbarHeight;
     Size size = MediaQuery.of(context).size;
     double imageHeight = size.height * 0.3 + kToolbarHeight;
-
+    double maxBarSize = size.height * 0.58;
     return Scaffold(
       body: DefaultTabController(
         length: 3,
@@ -49,82 +50,109 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
           physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              storeDetailAppBar(size, imageHeight, pageController),
+              storeDetailAppBar(
+                  size, imageHeight, pageController, maxBarSize, minBarSize),
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
                 sliver: SliverPersistentHeader(
+                  floating: false,
                   delegate: TabBarDelegate(tabController: _tabController),
                   pinned: true,
                 ),
               ),
             ];
           },
-          body: TabBarView(controller: _tabController, children: [
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                top = size.height - constraints.biggest.height;
-                print(top);
-                return Column(
-                  children: [
-                    SizedBox(height: top == 0 ? minBarSize + 50 : 50),
-                    Container(
-                        color: Colors.white,
-                        alignment: Alignment.topLeft,
-                        child: TabBar(
-                            indicatorWeight: 2,
-                            unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
-                            labelColor: Colors.green,
-                            indicatorColor: Colors.green,
-                            tabs: [
-                              Tab(
-                                child: Container(
-                                  color: Colors.white,
-                                  child: const Text(
-                                    "전체",
-                                  ),
-                                ),
-                              ),
-                              Tab(
-                                child: Container(
-                                  color: Colors.white,
-                                  child: const Text(
-                                    "시그니처",
-                                  ),
-                                ),
-                              ),
-                              Tab(
-                                child: Container(
-                                  color: Colors.white,
-                                  child: const Text(
-                                    "메뉴",
-                                  ),
-                                ),
-                              ),
-                            ])),
-                  ],
-                );
-              },
-            ),
-            Container(
-              color: Colors.redAccent,
-            ),
-            Container(
-              color: Colors.blue,
-            ),
-          ]),
+          body: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _tabController,
+              children: [
+                LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    top = size.height - constraints.biggest.height;
+
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height:
+                              top <= minBarSize ? minBarSize - top + 50 : 50,
+                        ),
+                        Expanded(
+                          child: AnchorTabPanel(tabs: const [
+                            Text('1'),
+                            Text('2'),
+                            Text('3'),
+                            Text('4'),
+                            Text('5'),
+                            Text('6'),
+                            Text('7'),
+                          ], body: [
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('1'),
+                            ),
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('2'),
+                            ),
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('3'),
+                            ),
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('4'),
+                            ),
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('5'),
+                            ),
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('6'),
+                            ),
+                            Container(
+                              color: Colors.amber,
+                              height: 300,
+                              width: size.width,
+                              child: const Text('7'),
+                            ),
+                          ]),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                Container(
+                  color: Colors.redAccent,
+                ),
+                Container(
+                  color: Colors.blue,
+                ),
+              ]),
         ),
       ),
     );
   }
 }
 
-SliverAppBar storeDetailAppBar(
-    Size size, double imageHeight, PageController controller) {
+SliverAppBar storeDetailAppBar(Size size, double imageHeight,
+    PageController controller, double maxBarSize, double minBarSize) {
   var top = 0.0;
   bool isFit = false;
-  // 앱바 가장 큰 사이즈
-  double maxBarSize = size.height * 0.58;
+
   return SliverAppBar(
     stretch: false,
     backgroundColor: Colors.white,
@@ -135,8 +163,6 @@ SliverAppBar storeDetailAppBar(
     expandedHeight: maxBarSize,
     flexibleSpace: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      // 앱바 가장 작은 사이즈
-      double minBarSize = MediaQuery.of(context).padding.top + kToolbarHeight;
       top = constraints.biggest.height;
       if (top == minBarSize) {
         isFit = true;
@@ -477,3 +503,44 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
+
+
+//  Column(
+//                     children: [
+//                       if (top <= minBarSize) SizedBox(height: minBarSize + 50),
+//                       Container(
+//                           color: Colors.white,
+//                           alignment: Alignment.topLeft,
+//                           child: TabBar(
+//                               indicatorWeight: 2,
+//                               unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
+//                               labelColor: Colors.green,
+//                               indicatorColor: Colors.green,
+//                               tabs: [
+//                                 Tab(
+//                                   child: Container(
+//                                     color: Colors.white,
+//                                     child: const Text(
+//                                       "전체",
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 Tab(
+//                                   child: Container(
+//                                     color: Colors.white,
+//                                     child: const Text(
+//                                       "시그니처",
+//                                     ),
+//                                   ),
+//                                 ),
+//                                 Tab(
+//                                   child: Container(
+//                                     color: Colors.white,
+//                                     child: const Text(
+//                                       "메뉴",
+//                                     ),
+//                                   ),
+//                                 ),
+//                               ])),
+//                     ],
+//                   ),
