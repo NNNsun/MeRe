@@ -1,4 +1,3 @@
-import 'package:anchor_tabs/anchor_tabs.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,7 +6,6 @@ import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/order/widget/custom_chip_widget.dart';
 import 'package:new_me_re/order/widget/tag_card_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../common/const/color.dart';
 
 class StoreDetailRoot extends StatefulWidget {
@@ -77,60 +75,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                           height:
                               top <= minBarSize ? minBarSize - top + 50 : 50,
                         ),
-                        Expanded(
-                          child: AnchorTabPanel(tabs: const [
-                            Text('1'),
-                            Text('2'),
-                            Text('3'),
-                            Text('4'),
-                            Text('5'),
-                            Text('6'),
-                            Text('7'),
-                          ], body: [
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('1'),
-                            ),
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('2'),
-                            ),
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('3'),
-                            ),
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('4'),
-                            ),
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('5'),
-                            ),
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('6'),
-                            ),
-                            Container(
-                              color: Colors.amber,
-                              height: 300,
-                              width: size.width,
-                              child: const Text('7'),
-                            ),
-                          ]),
-                        ),
+                        Expanded(child: MyHomePage())
                       ],
                     );
                   },
@@ -504,43 +449,51 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-
-//  Column(
-//                     children: [
-//                       if (top <= minBarSize) SizedBox(height: minBarSize + 50),
-//                       Container(
-//                           color: Colors.white,
-//                           alignment: Alignment.topLeft,
-//                           child: TabBar(
-//                               indicatorWeight: 2,
-//                               unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
-//                               labelColor: Colors.green,
-//                               indicatorColor: Colors.green,
-//                               tabs: [
-//                                 Tab(
-//                                   child: Container(
-//                                     color: Colors.white,
-//                                     child: const Text(
-//                                       "전체",
-//                                     ),
-//                                   ),
-//                                 ),
-//                                 Tab(
-//                                   child: Container(
-//                                     color: Colors.white,
-//                                     child: const Text(
-//                                       "시그니처",
-//                                     ),
-//                                   ),
-//                                 ),
-//                                 Tab(
-//                                   child: Container(
-//                                     color: Colors.white,
-//                                     child: const Text(
-//                                       "메뉴",
-//                                     ),
-//                                   ),
-//                                 ),
-//                               ])),
-//                     ],
-//                   ),
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final controller = ScrollController();
+    const itemCount = 100;
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: itemCount,
+              itemBuilder: (BuildContext ctx, int idx) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    child: Text("Scroll to $idx "),
+                    onPressed: () {
+                      final contentSize =
+                          controller.position.viewportDimension +
+                              controller.position.maxScrollExtent;
+                      final target = contentSize * idx / itemCount;
+                      controller.position.animateTo(
+                        target,
+                        duration: const Duration(seconds: 2),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                  ),
+                );
+              }),
+        ),
+        Expanded(
+          child: ListView.builder(
+            controller: controller,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text("Item at index $index."),
+              );
+            },
+            itemCount: itemCount,
+          ),
+        )
+      ],
+    );
+  }
+}
