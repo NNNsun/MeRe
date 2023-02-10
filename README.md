@@ -11,3 +11,4 @@
 * Home Screen ✔️
 * Alarm Screen ✔️
 * StoreList Screen ✔️
+* StoreDetail Screen 진행중...
