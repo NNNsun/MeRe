@@ -2,12 +2,15 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:new_me_re/common/component/custom_appbar.dart';
-import 'package:new_me_re/common/const/img_path.dart';
-import 'package:new_me_re/order/widget/custom_chip_widget.dart';
-import 'package:new_me_re/order/widget/tag_card_widget.dart';
-import 'package:scrollable_list_tabview/scrollable_list_tabview.dart';
+import 'package:rect_getter/rect_getter.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../common/component/custom_text_form_field.dart';
 import '../../common/const/color.dart';
+import '../../common/const/img_path.dart';
+import '../widget/custom_chip_widget.dart';
+import '../widget/tag_card_widget.dart';
 
 class StoreDetailRoot extends StatefulWidget {
   const StoreDetailRoot({super.key});
@@ -19,21 +22,88 @@ class StoreDetailRoot extends StatefulWidget {
 class _StoreDetailRootState extends State<StoreDetailRoot>
     with TickerProviderStateMixin {
   var top = 0.0;
-
   var pageController = PageController();
   late TabController _tabController;
   late TabController _menuTabController;
+  late AutoScrollController scrollController;
+  final wholePage = RectGetter.createGlobalKey();
+  bool pauseRectGetterIndex = false;
+  Map<int, dynamic> itemKeys = {};
+
+  bool onScrollNotification(ScrollNotification notification) {
+    if (pauseRectGetterIndex) return true;
+    int lastTabIndex = _menuTabController.length - 1;
+    List<int> visibleItems = getVisibleItemsIndex();
+
+    bool reachLastTabIndex = visibleItems.isNotEmpty &&
+        visibleItems.length <= 2 &&
+        visibleItems.last == lastTabIndex;
+    if (reachLastTabIndex) {
+      _menuTabController.animateTo(lastTabIndex);
+    } else {
+      int sumIndex = visibleItems.reduce((value, element) => value + element);
+      // 메뉴탭바의 가운데로 이동
+      int middleIndex = sumIndex ~/ visibleItems.length;
+      if (_menuTabController.index != middleIndex) {
+        _menuTabController.animateTo(middleIndex);
+      }
+    }
+    return false;
+  }
+
+  void animateAndScrollTo(int index) {
+    pauseRectGetterIndex = true;
+    _menuTabController.animateTo(index);
+    // Scroll 到 index 並使用 begin 的模式，結束後，把 pauseRectGetterIndex 設為 false 暫停執行 ScrollNotification
+    scrollController
+        .scrollToIndex(index, preferPosition: AutoScrollPosition.begin)
+        .then((value) => pauseRectGetterIndex = false);
+  }
+
   @override
   void initState() {
+    _tabController = TabController(vsync: this, length: 3); // list 길이
+    _menuTabController = TabController(vsync: this, length: 3); // list 길이
+    scrollController = AutoScrollController();
     super.initState();
-    _tabController = TabController(vsync: this, length: 3);
-    _menuTabController = TabController(vsync: this, length: 3);
   }
 
   @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
+    _menuTabController.dispose();
+    scrollController.dispose();
+  }
+
+  List<int> getVisibleItemsIndex() {
+    Rect? rect = RectGetter.getRectFromKey(wholePage);
+    List<int> items = [];
+    if (rect == null) return items;
+    itemKeys.forEach((index, key) {
+      Rect? itemRect = RectGetter.getRectFromKey(key);
+      if (itemRect == null) return;
+      if (itemRect.top > rect.bottom) return;
+      if (itemRect.bottom < rect.top) return;
+      items.add(index);
+    });
+
+    return items;
+  }
+
+  /// ListItem
+  Widget buildCategoryItem(int index) {
+    itemKeys[index] = RectGetter.createGlobalKey();
+    //Category category = data.categories[index];
+    return RectGetter(
+      key: itemKeys[index],
+      child: AutoScrollTag(
+        key: ValueKey(index),
+        index: index,
+        controller: scrollController,
+        //child: CategorySection(category: category),
+      ),
+    );
   }
 
   @override
@@ -76,7 +146,38 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                           height:
                               top <= minBarSize ? minBarSize - top + 50 : 50,
                         ),
-                        const Expanded(child: MyHomePages())
+                        Expanded(
+                          child: CustomScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            controller: top == minBarSize
+                                ? scrollController
+                                : null, //null일때 안쪽 list가 딸려올라가지않음
+                            slivers: [
+                              SliverPersistentHeader(
+                                delegate: CategoryHeaderDelegate(
+                                    menuTabController: _menuTabController),
+                                pinned: true,
+                              ),
+                              SliverPersistentHeader(
+                                delegate: MenuSearchHeaderDelegate(
+                                    menuTabController: _menuTabController),
+                                pinned: true,
+                              ),
+                              SliverList(
+                                delegate: SliverChildListDelegate([
+                                  Container(color: Colors.red, height: 200.0),
+                                  Container(
+                                      color: Colors.purple, height: 200.0),
+                                  Container(color: Colors.green, height: 200.0),
+                                  Container(color: Colors.teal, height: 200.0),
+                                  Container(color: Colors.white, height: 200.0),
+                                  Container(color: Colors.cyan, height: 200.0),
+                                  Container(color: Colors.red, height: 200.0),
+                                ]),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     );
                   },
@@ -118,6 +219,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
       return Stack(
         children: [
           FlexibleSpaceBar(
+            collapseMode: CollapseMode.pin,
             title: isFit
                 ? CustomAppBar(
                     color: Colors.black,
@@ -144,14 +246,14 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                     ),
                     Positioned(
                       width: size.width,
-                      bottom: 16,
+                      bottom: 14,
                       child: Center(
                         child: SmoothPageIndicator(
                           controller: controller,
                           count: 3,
                           effect: ColorTransitionEffect(
-                            dotHeight: 8,
-                            dotWidth: 8,
+                            dotHeight: 6,
+                            dotWidth: 6,
                             dotColor: INPUT_HINT_COLOR.withOpacity(0.5),
                             activeDotColor: Colors.white,
                           ),
@@ -160,7 +262,9 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                     ),
                   ]),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(
+                  height: 2,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -176,7 +280,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                 TagCardWidget(title: '노키즈존'),
                               ],
                             ),
-                            const CustomChipWidget(title: '여유', timeTaken: 20),
+                            const CustomChipWidget(title: '혼잡', timeTaken: 20),
                           ]),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 4),
@@ -188,12 +292,15 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                       ),
                       Row(
                         children: [
-                          SvgPicture.asset(red_star_icon),
+                          SvgPicture.asset(
+                            red_star_icon,
+                            height: 15,
+                          ),
                           const SizedBox(width: 3.5),
                           const Text(
                             '4.9',
                             style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 15,
                                 color: Colors.red,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -208,7 +315,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                   child: Text(
                                     '경북경산시 청운로 12',
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 14,
                                         color: IMPACT_COLOR_DARK_GRAY),
                                   ),
                                 ),
@@ -249,13 +356,16 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    SvgPicture.asset(call_icon),
-                                    const SizedBox(width: 5),
+                                    SvgPicture.asset(
+                                      call_icon,
+                                      height: 16,
+                                    ),
+                                    const SizedBox(width: 8),
                                     const Padding(
                                       padding: EdgeInsets.only(bottom: 3),
                                       child: Text(
                                         '전화',
-                                        style: TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 14.5),
                                       ),
                                     ),
                                     const SizedBox(width: 24),
@@ -264,7 +374,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                               ),
                             ),
                             const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 14),
+                              padding: EdgeInsets.symmetric(vertical: 13),
                               child: VerticalDivider(
                                 color: IMPACT_COLOR_LIGHT_GRAY,
                                 thickness: 1,
@@ -280,13 +390,16 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SvgPicture.asset(share_icon),
-                                    const SizedBox(width: 5),
+                                    SvgPicture.asset(
+                                      share_icon,
+                                      height: 16,
+                                    ),
+                                    const SizedBox(width: 8),
                                     const Padding(
                                       padding: EdgeInsets.only(bottom: 3),
                                       child: Text(
                                         '공유',
-                                        style: TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 14.5),
                                       ),
                                     ),
                                   ],
@@ -294,7 +407,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                               ),
                             ),
                             const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 14),
+                              padding: EdgeInsets.symmetric(vertical: 13),
                               child: VerticalDivider(
                                 color: IMPACT_COLOR_LIGHT_GRAY,
                                 thickness: 1,
@@ -311,13 +424,16 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     const SizedBox(width: 24),
-                                    SvgPicture.asset(store_heart_icon),
-                                    const SizedBox(width: 5),
+                                    SvgPicture.asset(
+                                      store_heart_icon,
+                                      height: 16,
+                                    ),
+                                    const SizedBox(width: 8),
                                     const Padding(
                                       padding: EdgeInsets.only(bottom: 3),
                                       child: Text(
                                         '찜',
-                                        style: TextStyle(fontSize: 15),
+                                        style: TextStyle(fontSize: 14.5),
                                       ),
                                     ),
                                   ],
@@ -339,7 +455,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
               ],
             ),
           ),
-          renderTitleBlur(),
+          renderTitleBlur(minBarSize: minBarSize),
           if (!isFit)
             CustomAppBar(
               color: Colors.white,
@@ -351,9 +467,77 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
   );
 }
 
-SizedBox renderTitleBlur() {
+class CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final TabController menuTabController;
+  CategoryHeaderDelegate({required this.menuTabController});
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      height: 50,
+      color: Colors.white,
+      child: TabBar(
+        controller: menuTabController,
+        isScrollable: true,
+        indicatorPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+        indicatorColor: Colors.transparent,
+        labelColor: PRIMARY_COLOR,
+        unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
+        indicatorWeight: 3.0,
+        tabs: const [Text('카테고리1'), Text('카테고리2'), Text('카테고리3')],
+        onTap: ((value) {}),
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 50;
+
+  @override
+  double get minExtent => 50;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final TabController menuTabController;
+  MenuSearchHeaderDelegate({required this.menuTabController});
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      height: 50,
+      color: Colors.white,
+      child: CustomTextFormField(
+        hintText: '${'카페명'} 메뉴를 검색하세요',
+        onChanged: (String value) {},
+        autofocus: false,
+        isSearch: true,
+        errorText: null,
+        obscureText: false,
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 50;
+
+  @override
+  double get minExtent => 50;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+SizedBox renderTitleBlur({required double minBarSize}) {
   return SizedBox(
-    height: 100,
+    height: minBarSize,
     child: FlexibleSpaceBar(
       collapseMode: CollapseMode.none,
       background: Container(
@@ -362,7 +546,7 @@ SizedBox renderTitleBlur() {
                 colors: [Colors.black38, Colors.transparent],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.0, 0.15])),
+                stops: [0.0, 0.17])),
       ),
     ),
   );
@@ -494,159 +678,6 @@ class MyHomePage extends StatelessWidget {
             itemCount: itemCount,
           ),
         )
-      ],
-    );
-  }
-}
-
-class MyHomePages extends StatefulWidget {
-  const MyHomePages({super.key});
-
-  @override
-  _MyHomePagesState createState() => _MyHomePagesState();
-}
-
-class _MyHomePagesState extends State<MyHomePages> {
-  @override
-  Widget build(BuildContext context) {
-    return ScrollableListTabView(
-      tabHeight: 60,
-      bodyAnimationDuration: const Duration(milliseconds: 150),
-      tabAnimationCurve: Curves.easeOut,
-      tabAnimationDuration: const Duration(milliseconds: 200),
-      tabs: [
-        ScrollableListTab(
-            tab: const ListTab(
-                label: Text('Label 1'),
-                icon: Icon(Icons.group),
-                showIconOnList: false),
-            body: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => ListTile(
-                leading: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.grey),
-                  alignment: Alignment.center,
-                  child: Text(index.toString()),
-                ),
-                title: Text('List element $index'),
-              ),
-            )),
-        ScrollableListTab(
-            tab: const ListTab(
-                label: Text('Label 2'), icon: Icon(Icons.subject)),
-            body: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => Card(
-                child: Center(child: Text('Card element $index')),
-              ),
-            )),
-        ScrollableListTab(
-            tab: const ListTab(
-                label: Text('Label 3'),
-                icon: Icon(Icons.subject),
-                showIconOnList: true),
-            body: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => Card(
-                child: Center(child: Text('Card element $index')),
-              ),
-            )),
-        ScrollableListTab(
-            tab: const ListTab(label: Text('Label 4'), icon: Icon(Icons.add)),
-            body: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => ListTile(
-                leading: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.grey),
-                  alignment: Alignment.center,
-                  child: Text(index.toString()),
-                ),
-                title: Text('List element $index'),
-              ),
-            )),
-        ScrollableListTab(
-            tab: const ListTab(label: Text('Label 5'), icon: Icon(Icons.group)),
-            body: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => ListTile(
-                leading: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.grey),
-                  alignment: Alignment.center,
-                  child: Text(index.toString()),
-                ),
-                title: Text('List element $index'),
-              ),
-            )),
-        ScrollableListTab(
-            tab: const ListTab(
-                label: Text('Label 6'), icon: Icon(Icons.subject)),
-            body: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => Card(
-                child: Center(child: Text('Card element $index')),
-              ),
-            )),
-        ScrollableListTab(
-            tab: const ListTab(
-                label: Text('Label 7'),
-                icon: Icon(Icons.subject),
-                showIconOnList: true),
-            body: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => Card(
-                child: Center(child: Text('Card element $index')),
-              ),
-            )),
-        ScrollableListTab(
-          tab: const ListTab(label: Text('Label 8'), icon: Icon(Icons.add)),
-          body: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 10,
-            itemBuilder: (_, index) => ListTile(
-              leading: Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.grey),
-                alignment: Alignment.center,
-                child: Text(index.toString()),
-              ),
-              title: Text('List element $index'),
-            ),
-          ),
-        ),
       ],
     );
   }

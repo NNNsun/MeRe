@@ -192,9 +192,9 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                                         ?.unfocus();
                                     return;
                                   }
-                                  isRightCertifyNumber = false; // 확인 가정하는 부분
+                                  isRightCertifyNumber = true; // 확인 가정하는 부분
                                   if (isRightCertifyNumber!) {
-                                    showToast(msg: "😊 인증되었습니다");
+                                    showToast(msg: "인증되었습니다 😊");
                                     FocusManager.instance.primaryFocus
                                         ?.unfocus();
                                   }

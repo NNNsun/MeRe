@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_me_re/common/const/color.dart';
+import 'package:new_me_re/common/const/img_path.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? hintText;
@@ -9,15 +11,19 @@ class CustomTextFormField extends StatelessWidget {
   final bool autofocus;
   final ValueChanged<String>? onChanged;
   final bool isPonNumber;
+  final bool isNickName;
   final bool isNumber;
+  final bool isSearch;
   final TextEditingController? controller;
 
   const CustomTextFormField({
     required this.onChanged,
     this.isPonNumber = false,
+    this.isSearch = false,
     this.autofocus = false,
     this.obscureText = false,
     this.isNumber = false,
+    this.isNickName = false,
     this.hintText,
     this.errorText,
     Key? key,
@@ -47,11 +53,18 @@ class CustomTextFormField extends StatelessWidget {
         if (isNumber && !isPonNumber)
           LengthLimitingTextInputFormatter(6), // 인증번호 6글자
         // 폰번호, 닉네임 길이
-        isPonNumber
-            ? LengthLimitingTextInputFormatter(13)
-            : LengthLimitingTextInputFormatter(10),
+        if (isPonNumber) LengthLimitingTextInputFormatter(13),
+        if (isNickName) LengthLimitingTextInputFormatter(10),
+        if (!isPonNumber && !isNickName) LengthLimitingTextInputFormatter(13)
       ],
       decoration: InputDecoration(
+        prefixIcon: isSearch
+            ? Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SvgPicture.asset(
+                  search_icon,
+                ))
+            : null,
         contentPadding: const EdgeInsets.all(20),
         hintText: hintText,
         errorText: errorText,

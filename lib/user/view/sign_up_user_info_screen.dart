@@ -93,6 +93,7 @@ class _SignUpUserInfoScreenState extends State<SignUpUserInfoScreen> {
                 children: [
                   CustomTextFormField(
                     isNumber: false,
+                    isNickName: true,
                     isPonNumber: false,
                     hintText: '닉네임을 입력하세요.',
                     errorText: isUnique ? null : '이미 존재하는 닉네임입니다.',
