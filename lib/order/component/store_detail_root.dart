@@ -54,7 +54,6 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
   void animateAndScrollTo(int index) {
     pauseRectGetterIndex = true;
     _menuTabController.animateTo(index);
-    // Scroll 到 index 並使用 begin 的模式，結束後，把 pauseRectGetterIndex 設為 false 暫停執行 ScrollNotification
     scrollController
         .scrollToIndex(index, preferPosition: AutoScrollPosition.begin)
         .then((value) => pauseRectGetterIndex = false);
@@ -132,65 +131,222 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
               ),
             ];
           },
-          body: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _tabController,
-              children: [
-                LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    top = size.height - constraints.biggest.height;
-
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height:
-                              top <= minBarSize ? minBarSize - top + 50 : 50,
+          body: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+            top = size.height - constraints.biggest.height;
+            return TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: _tabController,
+                children: [
+                  Column(
+                    children: [
+                      renderInterval(minBarSize),
+                      Expanded(
+                        child: CustomScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: top == minBarSize
+                              ? scrollController
+                              : null, //null일때 안쪽 list가 딸려올라가지않음
+                          slivers: [
+                            SliverPersistentHeader(
+                              delegate: CategoryHeaderDelegate(
+                                  menuTabController: _menuTabController),
+                              pinned: true,
+                            ),
+                            SliverPersistentHeader(
+                              delegate: MenuSearchHeaderDelegate(
+                                  menuTabController: _menuTabController),
+                              pinned: true,
+                            ),
+                            SliverList(
+                              delegate: SliverChildListDelegate([
+                                Container(color: Colors.red, height: 200.0),
+                                Container(color: Colors.purple, height: 200.0),
+                                Container(color: Colors.green, height: 200.0),
+                                Container(color: Colors.teal, height: 200.0),
+                                Container(color: Colors.white, height: 200.0),
+                                Container(color: Colors.cyan, height: 200.0),
+                                Container(color: Colors.red, height: 200.0),
+                              ]),
+                            )
+                          ],
                         ),
-                        Expanded(
-                          child: CustomScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            controller: top == minBarSize
-                                ? scrollController
-                                : null, //null일때 안쪽 list가 딸려올라가지않음
-                            slivers: [
-                              SliverPersistentHeader(
-                                delegate: CategoryHeaderDelegate(
-                                    menuTabController: _menuTabController),
-                                pinned: true,
-                              ),
-                              SliverPersistentHeader(
-                                delegate: MenuSearchHeaderDelegate(
-                                    menuTabController: _menuTabController),
-                                pinned: true,
-                              ),
-                              SliverList(
-                                delegate: SliverChildListDelegate([
-                                  Container(color: Colors.red, height: 200.0),
-                                  Container(
-                                      color: Colors.purple, height: 200.0),
-                                  Container(color: Colors.green, height: 200.0),
-                                  Container(color: Colors.teal, height: 200.0),
-                                  Container(color: Colors.white, height: 200.0),
-                                  Container(color: Colors.cyan, height: 200.0),
-                                  Container(color: Colors.red, height: 200.0),
-                                ]),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
-                Container(
-                  color: Colors.redAccent,
-                ),
-                Container(
-                  color: Colors.blue,
-                ),
-              ]),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      renderInterval(minBarSize),
+                      Expanded(
+                        child: CustomScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: top == minBarSize
+                              ? scrollController
+                              : null, //null일때 안쪽 list가 딸려올라가지않음
+                          slivers: [
+                            SliverList(
+                              delegate: SliverChildListDelegate([
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.20,
+                                    child: Image.asset(
+                                        'asset/temp/home_img/cafe_data_img/cafe_main/cafe12.jpg',
+                                        fit: BoxFit.cover), // 매장이미지
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Text(
+                                    '매장소개',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                      '내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력내용입력',
+                                      maxLines: 5),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 40),
+                                  child: Divider(
+                                    color: INPUT_BORDER_COLOR,
+                                    thickness: 8,
+                                    height: 1,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Table(
+                                    children: const [
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            '전화번호',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text('053)252-2522'),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            '운영시간',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text('10:00 ~ 20:00'),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            '휴무일',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text('일요일'),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            'SNS',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text('053)252-2522'),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            '사업자주소',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            '경산시 옥산로 펜타힐즈 경산시 옥산로 펜타힐즈경산시 옥산로 펜타힐즈경산시 옥산로 펜타힐즈',
+                                            maxLines: 3,
+                                          ),
+                                        ),
+                                      ]),
+                                      TableRow(children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text(
+                                            '사업자등록번호',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 8),
+                                          child: Text('053)252-2522'),
+                                        ),
+                                      ]),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                )
+                              ]),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    color: Colors.blue,
+                  ),
+                ]);
+          }),
         ),
       ),
+    );
+  }
+
+  SizedBox renderInterval(double minBarSize) {
+    return SizedBox(
+      height: top <= minBarSize ? minBarSize - top + 50 : 50,
     );
   }
 }
@@ -280,7 +436,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                 TagCardWidget(title: '노키즈존'),
                               ],
                             ),
-                            const CustomChipWidget(title: '혼잡', timeTaken: 20),
+                            const CustomChipWidget(title: '여유', timeTaken: 20),
                           ]),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 4),
@@ -455,7 +611,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
               ],
             ),
           ),
-          renderTitleBlur(minBarSize: minBarSize),
+          renderAppBarBlur(minBarSize: minBarSize),
           if (!isFit)
             CustomAppBar(
               color: Colors.white,
@@ -535,7 +691,7 @@ class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-SizedBox renderTitleBlur({required double minBarSize}) {
+SizedBox renderAppBarBlur({required double minBarSize}) {
   return SizedBox(
     height: minBarSize,
     child: FlexibleSpaceBar(
