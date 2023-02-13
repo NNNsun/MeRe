@@ -270,7 +270,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                                         ),
                                         Padding(
                                           padding: EdgeInsets.only(bottom: 8),
-                                          child: Text('일요일'),
+                                          child: Text('일요일???'),
                                         ),
                                       ]),
                                       TableRow(children: [
