@@ -12,7 +12,8 @@ class DefaultLayout extends StatelessWidget {
   final Widget? floatingActionButton;
   final bool stateBar;
   final bool leading;
-
+  final String? firstActionBtn;
+  final String? secondActionBtn;
   const DefaultLayout({
     required this.child,
     this.backgroundColor,
@@ -22,6 +23,8 @@ class DefaultLayout extends StatelessWidget {
     this.stateBar = true,
     Key? key,
     this.leading = true,
+    this.firstActionBtn,
+    this.secondActionBtn,
   }) : super(key: key);
 
   @override
@@ -54,6 +57,26 @@ class DefaultLayout extends StatelessWidget {
                 ),
                 onPressed: () {},
               )
+            : null,
+        actions: firstActionBtn != null
+            ? [
+                IconButton(
+                  icon: SvgPicture.asset(
+                    firstActionBtn!,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {},
+                ),
+                if (secondActionBtn != null)
+                  IconButton(
+                    icon: SvgPicture.asset(
+                      secondActionBtn!,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {},
+                  ),
+                const SizedBox(width: 8)
+              ]
             : null,
         backgroundColor: Colors.white,
         elevation: 0,

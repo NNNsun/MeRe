@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
 
-import 'order/component/store_detail_root.dart';
+import 'order/view/order_menu_screen.dart';
 
 void main() {
   runApp(const _App());
@@ -22,6 +22,7 @@ class _App extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: MaterialApp(
+          scrollBehavior: MyBehavior(),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: 'NotoSans',
@@ -35,7 +36,9 @@ class _App extends StatelessWidget {
           // ),
           //routerConfig: router,
 
-          home: const StoreDetailRoot()
+          home: const OrderMenuScreen()
+          //const StoreDetailRoot()
+
           //  const SignUpAuthScreen(), // 회원가입- SMS인증
           // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
           // const Root(),
@@ -45,5 +48,13 @@ class _App extends StatelessWidget {
           // const AlarmScreen(), // 홈-알림 화면
           ),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return child;
   }
 }

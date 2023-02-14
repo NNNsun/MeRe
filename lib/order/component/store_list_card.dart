@@ -83,7 +83,7 @@ class StoreListCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  SvgPicture.asset(star_icon, height: 14),
+                  SvgPicture.asset(black_star_icon, height: 14),
                   Padding(
                     padding: const EdgeInsets.only(left: 4, right: 3),
                     child: Text(

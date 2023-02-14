@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:new_me_re/common/component/custom_appbar.dart';
+import 'package:new_me_re/order/view/store_review_page_screen.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -176,10 +177,11 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                   ),
                   Column(
                     children: [
-                      renderInterval(minBarSize),
+                      SizedBox(
+                        height: top <= minBarSize ? minBarSize - top + 50 : 50,
+                      ),
                       Expanded(
                         child: CustomScrollView(
-                          physics: const NeverScrollableScrollPhysics(),
                           controller: top == minBarSize
                               ? scrollController
                               : null, //null일때 안쪽 list가 딸려올라가지않음
@@ -334,9 +336,12 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                       ),
                     ],
                   ),
-                  Container(
-                    color: Colors.blue,
-                  ),
+                  StoreReviewPageScreen(
+                      ratings: 4, // 100이상인 경우 고려
+                      grade: 4.0,
+                      top: top,
+                      minBarSize: minBarSize,
+                      scrollController: scrollController),
                 ]);
           }),
         ),
@@ -674,7 +679,7 @@ class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
         autofocus: false,
         isSearch: true,
         errorText: null,
-        obscureText: false,
+        obscureText: true,
       ),
     );
   }
