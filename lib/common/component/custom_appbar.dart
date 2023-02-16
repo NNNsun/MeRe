@@ -31,7 +31,11 @@ class CustomAppBar extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: IconButton(
-                      icon: SvgPicture.asset(back_btn, color: color),
+                      icon: SvgPicture.asset(
+                        back_btn,
+                        color: color,
+                        height: 18,
+                      ),
                       onPressed: () {
                         print('뒤로가기');
                       },
@@ -44,7 +48,7 @@ class CustomAppBar extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         title!,
-                        style: TextStyle(color: color, fontSize: 18),
+                        style: TextStyle(color: color, fontSize: 17),
                       ),
                     ),
                   ),

@@ -14,6 +14,8 @@ class DefaultLayout extends StatelessWidget {
   final bool leading;
   final String? firstActionBtn;
   final String? secondActionBtn;
+  final Widget? bottomSheet;
+
   const DefaultLayout({
     required this.child,
     this.backgroundColor,
@@ -25,6 +27,7 @@ class DefaultLayout extends StatelessWidget {
     this.leading = true,
     this.firstActionBtn,
     this.secondActionBtn,
+    this.bottomSheet,
   }) : super(key: key);
 
   @override
@@ -36,6 +39,7 @@ class DefaultLayout extends StatelessWidget {
     return SafeArea(
       top: false,
       child: Scaffold(
+        bottomSheet: bottomSheet,
         backgroundColor: backgroundColor ?? Colors.white,
         appBar: renderAppBar(),
         body: child,
@@ -54,6 +58,7 @@ class DefaultLayout extends StatelessWidget {
             ? IconButton(
                 icon: SvgPicture.asset(
                   back_btn,
+                  height: 18,
                 ),
                 onPressed: () {},
               )
@@ -64,6 +69,7 @@ class DefaultLayout extends StatelessWidget {
                   icon: SvgPicture.asset(
                     firstActionBtn!,
                     color: Colors.black,
+                    height: 22,
                   ),
                   onPressed: () {},
                 ),
@@ -72,6 +78,7 @@ class DefaultLayout extends StatelessWidget {
                     icon: SvgPicture.asset(
                       secondActionBtn!,
                       color: Colors.black,
+                      height: 22,
                     ),
                     onPressed: () {},
                   ),
@@ -84,7 +91,7 @@ class DefaultLayout extends StatelessWidget {
         title: Text(
           title!,
           style: const TextStyle(
-            fontSize: 16.0,
+            fontSize: 17.0,
             fontWeight: FontWeight.w500,
           ),
         ),

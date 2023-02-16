@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
 
-import 'order/view/order_menu_screen.dart';
+import 'order/view/shopping_basket.dart';
 
 void main() {
   runApp(const _App());
@@ -36,8 +36,9 @@ class _App extends StatelessWidget {
           // ),
           //routerConfig: router,
 
-          home: const OrderMenuScreen()
-          //const StoreDetailRoot()
+          home: const ShoppingBasket()
+          // const OrderMenuScreen() // 메뉴상세
+          //const StoreDetailRoot() // 주문하기 Root
 
           //  const SignUpAuthScreen(), // 회원가입- SMS인증
           // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력

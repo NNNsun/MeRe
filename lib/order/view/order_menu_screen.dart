@@ -42,6 +42,7 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // network로 변경
                 Image.asset(
                   'asset/temp/home_img/cafe_data_img/cafe_menu/menu_4.jpg',
                   width: MediaQuery.of(context).size.width,
@@ -103,6 +104,9 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                         child: Row(
                           children: [
                             IconButton(
+                                // remove click effect
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 onPressed: subCount,
                                 icon: SvgPicture.asset(minus_btn)),
                             Stack(children: [
@@ -120,6 +124,8 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                               )),
                             ]),
                             IconButton(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 onPressed: addCount,
                                 icon: SvgPicture.asset(plus_btn)),
                           ],
@@ -134,7 +140,19 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
               ),
             ],
           )),
-          // SliverList(delegate: )
+          // 옵션 부분
+          // 1. 무조건 하나만 선택해야하는 옵션
+          // 2. 여러개 선택할수있는 옵션
+          // 3. 옵션 자체의 갯수를 정하는 기능
+          SliverList(
+            delegate: SliverChildListDelegate([
+              const Text(
+                '필수옵션',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              ),
+              Container(color: Colors.purple, height: 100.0),
+            ]),
+          )
         ],
       ),
     );

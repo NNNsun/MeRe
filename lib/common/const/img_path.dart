@@ -41,3 +41,4 @@ const yellow_star = 'asset/svg/icon/component/yellow_star.svg';
 const minus_btn = 'asset/svg/icon/component/minus_btn.svg';
 const plus_btn = 'asset/svg/icon/component/plus_btn.svg';
 const count_box = 'asset/svg/icon/component/count_box.svg';
+const delete_icon = 'asset/svg/icon/component/delete_icon.svg';

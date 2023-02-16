@@ -189,25 +189,27 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                             SliverList(
                               delegate: SliverChildListDelegate([
                                 Padding(
-                                  padding: const EdgeInsets.all(20.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 20, bottom: 10),
                                   child: Container(
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(9),
                                     ),
                                     height: MediaQuery.of(context).size.height *
-                                        0.20,
+                                        0.25,
                                     child: Image.asset(
-                                        'asset/temp/home_img/cafe_data_img/cafe_main/cafe12.jpg',
+                                        'asset/temp/home_img/cafe_data_img/cafe_main/cafe10.jpg',
                                         fit: BoxFit.cover), // 매장이미지
                                   ),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.all(20.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
                                   child: Text(
                                     '매장소개',
                                     style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
@@ -218,7 +220,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                                       maxLines: 5),
                                 ),
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 40),
+                                  padding: EdgeInsets.symmetric(vertical: 30),
                                   child: Divider(
                                     color: INPUT_BORDER_COLOR,
                                     thickness: 8,
@@ -337,8 +339,8 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                     ],
                   ),
                   StoreReviewPageScreen(
-                      ratings: 4, // 100이상인 경우 고려
-                      grade: 4.0,
+                      ratings: 101, // 100이상인 경우 고려
+                      grade: 4.5,
                       top: top,
                       minBarSize: minBarSize,
                       scrollController: scrollController),
