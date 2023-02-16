@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
+import 'package:new_me_re/order/widget/tag_card_widget.dart';
 
 class StoreListCard extends StatelessWidget {
   final String id;
@@ -13,6 +14,7 @@ class StoreListCard extends StatelessWidget {
   final bool isNew;
   final String imageUrl;
   final String distance;
+  final List<String> tagName;
   const StoreListCard({
     Key? key,
     required this.id,
@@ -23,6 +25,7 @@ class StoreListCard extends StatelessWidget {
     required this.isNew,
     required this.imageUrl,
     required this.distance,
+    required this.tagName,
   }) : super(key: key);
 
   @override
@@ -30,9 +33,10 @@ class StoreListCard extends StatelessWidget {
     String congestionIcon = createCongestionIcon();
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.40,
+      height: MediaQuery.of(context).size.height * 0.45,
       child: Column(
         children: [
+          // 매장 이미지
           Stack(
             children: [
               Container(
@@ -55,7 +59,33 @@ class StoreListCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 14),
+          // tags, rating
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(children: [
+                for (int idx = 0; idx < tagName.length; idx++)
+                  TagCardWidget(
+                    title: tagName[idx],
+                  )
+              ]),
+              Row(
+                children: [
+                  SvgPicture.asset(black_star_icon, height: 14),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, right: 3),
+                    child: Text(
+                      rating,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -77,18 +107,6 @@ class StoreListCard extends StatelessWidget {
                     child: SvgPicture.asset(
                       congestionIcon, // 기본 = '보통'
                       height: MediaQuery.of(context).size.height * 0.03,
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  SvgPicture.asset(black_star_icon, height: 14),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, right: 3),
-                    child: Text(
-                      rating,
-                      style: const TextStyle(fontSize: 16),
                     ),
                   )
                 ],

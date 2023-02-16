@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
@@ -43,6 +44,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
       storeList.add(StoreListCard(
           id: i.toString(),
           title: '비둘기는멍청해보여요',
+          tagName: const ['애견동반', '노키즈존'],
           congestion: congestion,
           rating: (i % 5).toString(),
           isSale: isSale,
@@ -63,17 +65,38 @@ class _StoreListScreenState extends State<StoreListScreen> {
   int total = 100;
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+      SystemUiOverlay.top,
+      SystemUiOverlay.bottom,
+    ]);
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: Colors.white));
     return SafeArea(
+      top: false,
       child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+          title: const Text(
+            '매장목록',
+            style: TextStyle(
+              fontSize: 17.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          foregroundColor: Colors.black,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 4),
               const SearchBar(),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 14),
                 child: Row(
                   children: [
                     makeChip(),
@@ -81,7 +104,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 8),
                 child: Text('전체 ${storeList.length}'),
               ),
               Expanded(
@@ -95,6 +118,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
                       itemBuilder: (context, index) {
                         return StoreListCard(
                             id: storeList[index].id,
+                            tagName: storeList[index].tagName,
                             title: storeList[index].title,
                             congestion: storeList[index].congestion,
                             rating: storeList[index].rating,
@@ -123,7 +147,7 @@ class _StoreListScreenState extends State<StoreListScreen> {
     return Wrap(
       spacing: 8.0,
       children: List<Widget>.generate(
-        3,
+        4,
         (int index) {
           if (index == 0) {
             title = '거리순';
@@ -131,6 +155,8 @@ class _StoreListScreenState extends State<StoreListScreen> {
             title = '찜많은순';
           } else if (index == 2) {
             title = '별점순';
+          } else if (index == 3) {
+            title = '할인순';
           }
           return ChoiceChip(
             pressElevation: 0,
