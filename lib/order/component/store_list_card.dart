@@ -31,104 +31,113 @@ class StoreListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String congestionIcon = createCongestionIcon();
-
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.45,
-      child: Column(
-        children: [
-          // 매장 이미지
-          Stack(
+    double sizeHeight = MediaQuery.of(context).size.height;
+    return GestureDetector(
+      onTap: () {
+        print('매장디테일로 이동');
+      },
+      child: SizedBox(
+        height: sizeHeight * 0.45,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: Image.asset(imageUrl, fit: BoxFit.cover), // 매장이미지
-              ),
-              Positioned(
-                top: 12,
-                left: 12,
-                child: Row(
-                  children: [
-                    if (isSale) const StoreBadge(badgeTitle: '할인'),
-                    if (isNew) const StoreBadge(badgeTitle: 'NEW'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          // tags, rating
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(children: [
-                for (int idx = 0; idx < tagName.length; idx++)
-                  TagCardWidget(
-                    title: tagName[idx],
-                  )
-              ]),
-              Row(
+              // 매장 이미지
+              Stack(
                 children: [
-                  SvgPicture.asset(black_star_icon, height: 14),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, right: 3),
-                    child: Text(
-                      rating,
-                      style: const TextStyle(fontSize: 16),
+                  Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  )
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 3),
-                    child: AutoSizeText(
-                      maxLines: 1,
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    height: sizeHeight * 0.3,
+                    child: Image.asset(imageUrl, fit: BoxFit.cover), // 매장이미지
+                  ),
+                  Positioned(
+                    top: 12,
+                    left: 12,
+                    child: Row(
+                      children: [
+                        if (isSale) const StoreBadge(badgeTitle: '할인'),
+                        if (isNew) const StoreBadge(badgeTitle: 'NEW'),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: SvgPicture.asset(
-                      congestionIcon, // 기본 = '보통'
-                      height: MediaQuery.of(context).size.height * 0.03,
-                    ),
-                  )
                 ],
               ),
+              const SizedBox(height: 14),
+              // tags, rating
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(children: [
+                    for (int idx = 0; idx < tagName.length; idx++)
+                      TagCardWidget(
+                        title: tagName[idx],
+                      )
+                  ]),
+                  Row(
+                    children: [
+                      SvgPicture.asset(black_star_icon, height: 14),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, right: 3),
+                        child: Text(
+                          rating,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 3),
+                        child: AutoSizeText(
+                          maxLines: 1,
+                          title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: SvgPicture.asset(
+                          congestionIcon, // 기본 = '보통'
+                          height: sizeHeight * 0.03,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(location_icon),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    '${distance}km',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: BODY_TEXT_COLOR_GRAY,
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
-          Row(
-            children: [
-              SvgPicture.asset(location_icon),
-              const SizedBox(
-                width: 4,
-              ),
-              Text(
-                '${distance}km',
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: BODY_TEXT_COLOR_GRAY,
-                ),
-              ),
-            ],
-          )
-        ],
+        ),
       ),
     );
   }

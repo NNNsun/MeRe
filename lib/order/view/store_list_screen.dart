@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,9 +56,12 @@ class _StoreListScreenState extends State<StoreListScreen> {
     }
   }
 
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     createTempCafeList();
+
     super.initState();
   }
 
@@ -89,99 +94,98 @@ class _StoreListScreenState extends State<StoreListScreen> {
           ),
           foregroundColor: Colors.black,
         ),
-        body: CustomScrollView(
-          slivers: [
+        body: NestedScrollView(
+          controller: scrollController,
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
             const SliverPersistentHeader(
               floating: false,
               delegate: SearchBarDelegate(),
               pinned: true,
             ),
             SliverAppBar(
+              snap: true,
               floating: true,
-              forceElevated: true,
-              automaticallyImplyLeading: false,
+              automaticallyImplyLeading: true,
               elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              flexibleSpace: SizedBox(
-                  height: 50,
-                  child: Wrap(
-                    spacing: 8.0,
-                    children: List<Widget>.generate(
-                      4,
-                      (int index) {
-                        if (index == 0) {
-                          title = '거리순';
-                        } else if (index == 1) {
-                          title = '찜많은순';
-                        } else if (index == 2) {
-                          title = '별점순';
-                        } else if (index == 3) {
-                          title = '할인순';
-                        }
-                        return ChoiceChip(
-                          pressElevation: 0,
-                          selectedColor:
-                              const Color.fromARGB(255, 255, 244, 244),
-                          shape: StadiumBorder(
-                              side: BorderSide(
-                                  color: _value == index
-                                      ? PRIMARY_COLOR
-                                      : Colors.transparent)),
-                          backgroundColor: INPUT_BG_COLOR,
-                          label: Text(
-                            title,
-                            style: TextStyle(
-                              color: _value == index
-                                  ? PRIMARY_COLOR
-                                  : INPUT_HINT_COLOR,
-                              fontWeight: FontWeight.w500,
-                            ),
+              backgroundColor: Colors.white,
+              flexibleSpace: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Wrap(
+                  spacing: 8.0,
+                  children: List<Widget>.generate(
+                    4,
+                    (int index) {
+                      if (index == 0) {
+                        title = '거리순';
+                      } else if (index == 1) {
+                        title = '찜많은순';
+                      } else if (index == 2) {
+                        title = '별점순';
+                      } else if (index == 3) {
+                        title = '할인순';
+                      }
+                      return ChoiceChip(
+                        pressElevation: 0,
+                        selectedColor: const Color.fromARGB(255, 255, 244, 244),
+                        shape: StadiumBorder(
+                            side: BorderSide(
+                                color: _value == index
+                                    ? PRIMARY_COLOR
+                                    : Colors.transparent)),
+                        backgroundColor: INPUT_BG_COLOR,
+                        label: Text(
+                          title,
+                          style: TextStyle(
+                            color: _value == index
+                                ? PRIMARY_COLOR
+                                : INPUT_HINT_COLOR,
+                            fontWeight: FontWeight.w500,
                           ),
-                          selected: _value == index,
-                          onSelected: (bool selected) {
-                            setState(() {
-                              _value = (selected ? index : index);
-                            });
-                          },
-                        );
-                      },
-                    ).toList(),
-                  )),
-              expandedHeight: 50,
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text('전체 ${storeList.length}'),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Expanded(
-                child: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return ListView.builder(
-                        itemCount: storeList.length,
-                        itemBuilder: (context, index) {
-                          return StoreListCard(
-                              id: storeList[index].id,
-                              tagName: storeList[index].tagName,
-                              title: storeList[index].title,
-                              congestion: storeList[index].congestion,
-                              rating: storeList[index].rating,
-                              isSale: storeList[index].isSale,
-                              isNew: storeList[index].isNew,
-                              imageUrl: storeList[index].imageUrl,
-                              distance: storeList[index].distance);
+                        ),
+                        selected: _value == index,
+                        onSelected: (bool selected) {
+                          setState(() {
+                            _value = (selected ? index : index);
+                          });
                         },
                       );
                     },
-                    childCount: storeList.length,
-                  ),
+                  ).toList(),
                 ),
               ),
+              expandedHeight: 30,
             ),
           ],
+          body: RefreshIndicator(
+            color: PRIMARY_COLOR,
+            backgroundColor: Colors.white,
+            onRefresh: _refresh,
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, bottom: 8),
+                    child: Text('전체 ${storeList.length}'),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (context, index) => StoreListCard(
+                          id: storeList[index].id,
+                          tagName: storeList[index].tagName,
+                          title: storeList[index].title,
+                          congestion: storeList[index].congestion,
+                          rating: storeList[index].rating,
+                          isSale: storeList[index].isSale,
+                          isNew: storeList[index].isNew,
+                          imageUrl: storeList[index].imageUrl,
+                          distance: storeList[index].distance),
+                      childCount: storeList.length),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -203,7 +207,8 @@ class SearchBarDelegate extends SliverPersistentHeaderDelegate {
         print("검색바 click!");
       },
       child: Container(
-        padding: const EdgeInsets.only(bottom: 4),
+        // 검색 바 padding
+        padding: const EdgeInsets.only(bottom: 4, left: 20, right: 20),
         color: Colors.white,
         child: Container(
           decoration: BoxDecoration(
@@ -214,15 +219,18 @@ class SearchBarDelegate extends SliverPersistentHeaderDelegate {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: SvgPicture.asset(search_icon),
+                padding: const EdgeInsets.only(left: 16, right: 12),
+                child: SvgPicture.asset(
+                  search_icon,
+                  height: 18,
+                ),
               ),
               const AutoSizeText(
                 '카페이름, 해시태그를 검색하세요.',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: INPUT_HINT_COLOR,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               )
             ],
@@ -308,51 +316,3 @@ class ChipsDelegate extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
-
-
-    // child: Padding(
-    //         padding: const EdgeInsets.symmetric(horizontal: 20),
-    //         child: Column(
-    //           crossAxisAlignment: CrossAxisAlignment.start,
-    //           children: [
-    //             const SizedBox(height: 4),
-    //           const SearchBar(),
-    //             Padding(
-    //               padding: const EdgeInsets.symmetric(vertical: 14),
-    //               child: Row(
-    //                 children: [
-    //                   makeChip(),
-    //                 ],
-    //               ),
-    //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.only(bottom: 8),
-    //               child: Text('전체 ${storeList.length}'),
-    //             ),
-    //             Expanded(
-    //               child: ScrollConfiguration(
-    //                 behavior: const ScrollBehavior().copyWith(overscroll: false),
-    //                 child: RefreshIndicator(
-    //                   color: PRIMARY_COLOR,
-    //                   onRefresh: _refresh,
-    //                   child: ListView.builder(
-    //                     itemCount: storeList.length,
-    //                     itemBuilder: (context, index) {
-    //                       return StoreListCard(
-    //                           id: storeList[index].id,
-    //                           tagName: storeList[index].tagName,
-    //                           title: storeList[index].title,
-    //                           congestion: storeList[index].congestion,
-    //                           rating: storeList[index].rating,
-    //                           isSale: storeList[index].isSale,
-    //                           isNew: storeList[index].isNew,
-    //                           imageUrl: storeList[index].imageUrl,
-    //                           distance: storeList[index].distance);
-    //                     },
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
