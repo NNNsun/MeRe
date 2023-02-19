@@ -5,7 +5,6 @@ import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/const/service_logic.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
 import 'package:new_me_re/order/widget/basket_bottom_sheet.dart';
-import 'package:new_me_re/order/widget/delete_all.dart';
 
 class ShoppingBasket extends StatefulWidget {
   const ShoppingBasket({super.key});
@@ -38,7 +37,7 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
     double bottomSheetSize = height * 0.2;
     double cardHeight = height * 0.18;
 
-    int costAll = 0;
+    int costAll = count * 5000;
     return DefaultLayout(
       backgroundColor: INPUT_BG_COLOR,
       title: '장바구니',
@@ -47,13 +46,6 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
           BasketBottomSheet(bottomSheetSize: bottomSheetSize, costAll: costAll),
       child: CustomScrollView(
         slivers: [
-          const SliverPersistentHeader(
-            delegate: DeleteAll(),
-            pinned: true,
-          ),
-          const SliverToBoxAdapter(
-            child: Divider(height: 1),
-          ),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.only(left: 20),

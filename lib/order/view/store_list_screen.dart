@@ -71,6 +71,8 @@ class _StoreListScreenState extends State<StoreListScreen> {
   String title = '';
   @override
   Widget build(BuildContext context) {
+    double stateBarSize = MediaQuery.of(context).padding.top;
+    double minBarSize = stateBarSize + kToolbarHeight;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.top,
       SystemUiOverlay.bottom,
@@ -82,27 +84,67 @@ class _StoreListScreenState extends State<StoreListScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          toolbarHeight: minBarSize * 1.1,
           backgroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            '매장목록',
-            style: TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.w500,
-            ),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: stateBarSize * 0.25,
+              ),
+              const Text(
+                '매장목록',
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              SizedBox(
+                height: stateBarSize * 0.3,
+              ),
+              GestureDetector(
+                onTap: () {
+                  print("검색바 click!");
+                },
+                child: Container(
+                  color: Colors.white,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: INPUT_BG_COLOR,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey.shade300)),
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16, right: 12),
+                          child: SvgPicture.asset(
+                            search_icon,
+                            height: 18,
+                          ),
+                        ),
+                        const AutoSizeText(
+                          '카페이름, 해시태그를 검색하세요.',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: INPUT_HINT_COLOR,
+                            fontSize: 14,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
           foregroundColor: Colors.black,
         ),
-        body: NestedScrollView(
+        body: CustomScrollView(
           controller: scrollController,
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            const SliverPersistentHeader(
-              floating: false,
-              delegate: SearchBarDelegate(),
-              pinned: true,
-            ),
+          slivers: [
             SliverAppBar(
               snap: true,
               floating: true,
@@ -156,36 +198,27 @@ class _StoreListScreenState extends State<StoreListScreen> {
               ),
               expandedHeight: 30,
             ),
-          ],
-          body: RefreshIndicator(
-            color: PRIMARY_COLOR,
-            backgroundColor: Colors.white,
-            onRefresh: _refresh,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, bottom: 8),
-                    child: Text('전체 ${storeList.length}'),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (context, index) => StoreListCard(
-                          id: storeList[index].id,
-                          tagName: storeList[index].tagName,
-                          title: storeList[index].title,
-                          congestion: storeList[index].congestion,
-                          rating: storeList[index].rating,
-                          isSale: storeList[index].isSale,
-                          isNew: storeList[index].isNew,
-                          imageUrl: storeList[index].imageUrl,
-                          distance: storeList[index].distance),
-                      childCount: storeList.length),
-                ),
-              ],
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 8),
+                child: Text('전체 ${storeList.length}'),
+              ),
             ),
-          ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  (context, index) => StoreListCard(
+                      id: storeList[index].id,
+                      tagName: storeList[index].tagName,
+                      title: storeList[index].title,
+                      congestion: storeList[index].congestion,
+                      rating: storeList[index].rating,
+                      isSale: storeList[index].isSale,
+                      isNew: storeList[index].isNew,
+                      imageUrl: storeList[index].imageUrl,
+                      distance: storeList[index].distance),
+                  childCount: storeList.length),
+            ),
+          ],
         ),
       ),
     );
@@ -245,71 +278,6 @@ class SearchBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get minExtent => 50;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-}
-
-class ChipsDelegate extends SliverPersistentHeaderDelegate {
-  int value;
-  ChipsDelegate({required this.value});
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContente) {
-    String title = '';
-
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-      return Wrap(
-        spacing: 8.0,
-        children: List<Widget>.generate(
-          4,
-          (int index) {
-            if (index == 0) {
-              title = '거리순';
-            } else if (index == 1) {
-              title = '찜많은순';
-            } else if (index == 2) {
-              title = '별점순';
-            } else if (index == 3) {
-              title = '할인순';
-            }
-            return ChoiceChip(
-              pressElevation: 0,
-              selectedColor: const Color.fromARGB(255, 255, 244, 244),
-              shape: StadiumBorder(
-                  side: BorderSide(
-                      color:
-                          value == index ? PRIMARY_COLOR : Colors.transparent)),
-              backgroundColor: INPUT_BG_COLOR,
-              label: Text(
-                title,
-                style: TextStyle(
-                  color: value == index ? PRIMARY_COLOR : INPUT_HINT_COLOR,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              selected: value == index,
-              onSelected: (bool selected) {
-                setState(() {
-                  value = (selected ? index : index);
-                });
-              },
-            );
-          },
-        ).toList(),
-      );
-    });
-  }
-
-  @override
-  double get maxExtent => 48;
-
-  @override
-  double get minExtent => 48;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

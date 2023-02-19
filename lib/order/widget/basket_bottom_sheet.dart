@@ -12,7 +12,6 @@ class BasketBottomSheet extends StatelessWidget {
 
   final double bottomSheetSize;
   final int costAll;
-
   @override
   Widget build(BuildContext context) {
     return Container(
