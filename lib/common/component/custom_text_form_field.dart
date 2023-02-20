@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool isNickName;
   final bool isNumber;
   final bool isSearch;
+  final bool isRequest;
   final TextEditingController? controller;
 
   const CustomTextFormField({
@@ -28,6 +29,7 @@ class CustomTextFormField extends StatelessWidget {
     this.errorText,
     Key? key,
     this.controller,
+    this.isRequest = false,
   }) : super(key: key);
 
   @override
@@ -55,7 +57,9 @@ class CustomTextFormField extends StatelessWidget {
         // 폰번호, 닉네임 길이
         if (isPonNumber) LengthLimitingTextInputFormatter(13),
         if (isNickName) LengthLimitingTextInputFormatter(10),
-        if (!isPonNumber && !isNickName) LengthLimitingTextInputFormatter(13)
+        if (!isPonNumber && !isNickName && !isRequest)
+          LengthLimitingTextInputFormatter(13),
+        if (isRequest) LengthLimitingTextInputFormatter(50),
       ],
       decoration: InputDecoration(
         prefixIcon: isSearch
@@ -65,7 +69,7 @@ class CustomTextFormField extends StatelessWidget {
                   search_icon,
                 ))
             : null,
-        contentPadding: const EdgeInsets.all(20),
+        contentPadding: const EdgeInsets.all(16),
         hintText: hintText,
         errorText: errorText,
         hintStyle: const TextStyle(

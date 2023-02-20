@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/view/root.dart';
 
+import 'order/view/order_detail_screen.dart';
+
 void main() {
   runApp(const _App());
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -21,33 +23,34 @@ class _App extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: MaterialApp(
-        scrollBehavior: MyBehavior(),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'NotoSans',
-          textSelectionTheme: const TextSelectionThemeData(
-            selectionHandleColor: PRIMARY_COLOR,
+          scrollBehavior: MyBehavior(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'NotoSans',
+            textSelectionTheme: const TextSelectionThemeData(
+              selectionHandleColor: PRIMARY_COLOR,
+            ),
           ),
-        ),
-        // theme: ThemeData(
-        //   primaryColor: Colors.blue,
-        //   visualDensity: VisualDensity.adaptivePlatformDensity,
-        // ),
-        //routerConfig: router,
-        home: const Root(),
-        //const StoreDetailRoot() // 주문하기 Root
+          // theme: ThemeData(
+          //   primaryColor: Colors.blue,
+          //   visualDensity: VisualDensity.adaptivePlatformDensity,
+          // ),
+          //routerConfig: router,
+          home: const OrderDetailScreen()
+          // const Root(),
+          //const StoreDetailRoot() // 주문하기 Root
 
-        //const ShoppingBasket() // 장바구니
-        //const StoreListScreen() // 주문하기- 매장리스트
+          //const ShoppingBasket() // 장바구니
+          //const StoreListScreen() // 주문하기- 매장리스트
 
-        // const OrderMenuScreen() // 메뉴상세
+          // const OrderMenuScreen() // 메뉴상세
 
-        //  const SignUpAuthScreen(), // 회원가입- SMS인증
-        // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
+          //  const SignUpAuthScreen(), // 회원가입- SMS인증
+          // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
 
-        // const LoginScreen(), // 첫 로그인 화면
-        // const AlarmScreen(), // 홈-알림 화면
-      ),
+          // const LoginScreen(), // 첫 로그인 화면
+          // const AlarmScreen(), // 홈-알림 화면
+          ),
     );
   }
 }
