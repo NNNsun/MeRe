@@ -15,7 +15,7 @@ const IMPACT_COLOR_LIGHT_GRAY = Color.fromARGB(255, 201, 201, 206);
 // 글자 색상 4. 어두운 회색
 const IMPACT_COLOR_DARK_GRAY = Color.fromARGB(255, 116, 116, 116);
 // 텍스트필드 배경 색상
-const INPUT_BG_COLOR = Color.fromARGB(255, 242, 244, 246);
+const INPUT_BG_COLOR = Color.fromARGB(255, 246, 246, 246);
 
 // 텍스트필드 힌트 색상
 const INPUT_HINT_COLOR = Color.fromARGB(255, 181, 181, 181);

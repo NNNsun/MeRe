@@ -10,6 +10,7 @@ const circle_02 = 'asset/svg/icon/sign_up/circle_02.svg';
 const dots = 'asset/svg/icon/sign_up/dots.svg';
 const circle_fill_02 = 'asset/svg/icon/sign_up/circle_fill_02.svg';
 const circle_check = 'asset/svg/icon/sign_up/circle_check.svg';
+const illust01 = 'asset/img/logo/illust01.png';
 // root_icon
 const history_acti = 'asset/png/icon/root/history_acti.png';
 const history_deacti = 'asset/png/icon/root/history_deacti.png';

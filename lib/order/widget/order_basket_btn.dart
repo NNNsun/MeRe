@@ -8,6 +8,7 @@ class OrderBasketBtn extends StatelessWidget {
     required this.btnColor,
     required this.textColor,
     required this.text,
+    required this.onTap,
   }) : super(key: key);
 
   final double bottomSheetSize;
@@ -15,11 +16,12 @@ class OrderBasketBtn extends StatelessWidget {
   final Color btnColor;
   final Color textColor;
   final String text;
+  final Function() onTap;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           height: bottomSheetSize * 0.45,
           decoration: BoxDecoration(

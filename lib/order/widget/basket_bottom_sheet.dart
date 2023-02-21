@@ -48,26 +48,18 @@ class BasketBottomSheet extends StatelessWidget {
             ),
             SizedBox(
               height: bottomSheetSize * 3 / 5,
-              child: Container(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    OrderBasketBtn(
-                      bottomSheetSize: bottomSheetSize,
-                      btnColor: PRIMARY_COLOR,
-                      text: '매장이용',
-                      textColor: Colors.white,
-                    ),
-                    const SizedBox(width: 8),
-                    OrderBasketBtn(
-                      bottomSheetSize: bottomSheetSize,
-                      btnColor: Colors.white,
-                      text: '테이크아웃',
-                      textColor: PRIMARY_COLOR,
-                      borderColor: PRIMARY_COLOR,
-                    )
-                  ],
-                ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  OrderBasketBtn(
+                    onTap: () {},
+                    bottomSheetSize: bottomSheetSize,
+                    btnColor: PRIMARY_COLOR,
+                    text: '${calcStringToWon(costAll)}원 주문하기',
+                    textColor: Colors.white,
+                  ),
+                  const SizedBox(width: 8),
+                ],
               ),
             ),
           ],
