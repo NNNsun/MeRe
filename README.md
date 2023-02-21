@@ -5,12 +5,14 @@
 ```
 
 
-### 1차 Publishing
+### Publishing
 
 * Login & SignUp Screen✔️
 * Home Screen ✔️
 * Alarm Screen ✔️
 * StoreList Screen ✔️
-* StoreDetail Screen 진행중...
-* MenuDetail Screen 진행중..
- * baeminUi 분석중 ✔️
+* StoreDetail Screen ✔️
+* MenuDetail Screen ✔️
+ * baeminUi 분석 ✔️
+* Shopping Cart Screen ✔️
+* Order Detail Screen 진행중...
