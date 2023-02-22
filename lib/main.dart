@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
 
-import 'order/view/shopping_basket.dart';
+import 'order/component/store_detail_root.dart';
 
 void main() {
   runApp(const _App());
@@ -35,19 +35,19 @@ class _App extends StatelessWidget {
           //   visualDensity: VisualDensity.adaptivePlatformDensity,
           // ),
           //routerConfig: router,
-          home: const ShoppingBasket() // 장바구니
-          // const OrderDetailScreen() // 주문명세서
+          home: const StoreDetailRoot() // 주문하기 Root
+          // const ShoppingBasket() // 장바구니
+          //const OrderDetailScreen() // 주문명세서
+
+          //const OrderMenuScreen() // 메뉴상세
+
           // const Root(),
-          // const StoreDetailRoot() // 주문하기 Root
+          //const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
+          //const SignUpAuthScreen(), // 회원가입- SMS인증
+          //const LoginScreen(), // 첫 로그인 화면
 
           //const StoreListScreen() // 주문하기- 매장리스트
 
-          // const OrderMenuScreen() // 메뉴상세
-
-          //  const SignUpAuthScreen(), // 회원가입- SMS인증
-          // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
-
-          // const LoginScreen(), // 첫 로그인 화면
           // const AlarmScreen(), // 홈-알림 화면
           ),
     );

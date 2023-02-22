@@ -38,7 +38,7 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
     double height = MediaQuery.of(context).size.height;
     double bottomSheetSize = height * 0.2;
     double cardHeight = height * 0.18;
-    bool isEmpty = true;
+    bool isEmpty = false;
     int costAll = count * 5000;
     return DefaultLayout(
       backgroundColor: isEmpty == true ? Colors.white : INPUT_BG_COLOR,
