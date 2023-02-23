@@ -61,6 +61,7 @@ dependencies:
   scrollable_list_tabview: ^0.1.6
   rect_getter: ^1.1.0
   readmore: ^2.2.0
+  timer_builder: ^2.0.0
 
 dev_dependencies:
   flutter_test:
