@@ -229,6 +229,23 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
+          SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  '방문시간',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          )),
         ],
       ),
     );

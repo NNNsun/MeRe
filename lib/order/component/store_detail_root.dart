@@ -10,7 +10,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../common/component/custom_text_form_field.dart';
 import '../../common/const/color.dart';
 import '../../common/const/img_path.dart';
-import '../widget/custom_chip_widget.dart';
 import '../widget/tag_card_widget.dart';
 
 class StoreDetailRoot extends StatefulWidget {
@@ -149,11 +148,6 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                               ? scrollController
                               : null, //null일때 안쪽 list가 딸려올라가지않음
                           slivers: [
-                            SliverPersistentHeader(
-                              delegate: CategoryHeaderDelegate(
-                                  menuTabController: _menuTabController),
-                              pinned: true,
-                            ),
                             SliverPersistentHeader(
                               delegate: MenuSearchHeaderDelegate(
                                   menuTabController: _menuTabController),
@@ -443,7 +437,6 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                 TagCardWidget(title: '노키즈존'),
                               ],
                             ),
-                            const CustomChipWidget(title: '여유', timeTaken: 20),
                           ]),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 4),
@@ -630,41 +623,6 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
   );
 }
 
-class CategoryHeaderDelegate extends SliverPersistentHeaderDelegate {
-  final TabController menuTabController;
-  CategoryHeaderDelegate({required this.menuTabController});
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      height: 50,
-      color: Colors.white,
-      child: TabBar(
-        controller: menuTabController,
-        isScrollable: true,
-        indicatorPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-        indicatorColor: Colors.transparent,
-        labelColor: PRIMARY_COLOR,
-        unselectedLabelColor: IMPACT_COLOR_LIGHT_GRAY,
-        indicatorWeight: 3.0,
-        tabs: const [Text('카테고리1'), Text('카테고리2'), Text('카테고리3')],
-        onTap: ((value) {}),
-      ),
-    );
-  }
-
-  @override
-  double get maxExtent => 50;
-
-  @override
-  double get minExtent => 50;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-}
-
 class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   final TabController menuTabController;
   MenuSearchHeaderDelegate({required this.menuTabController});
@@ -794,54 +752,5 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return false;
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final controller = ScrollController();
-    const itemCount = 100;
-    return Column(
-      children: [
-        SizedBox(
-          height: 50,
-          width: MediaQuery.of(context).size.width,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: itemCount,
-              itemBuilder: (BuildContext ctx, int idx) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    child: Text("Scroll to $idx "),
-                    onPressed: () {
-                      final contentSize =
-                          controller.position.viewportDimension +
-                              controller.position.maxScrollExtent;
-                      final target = contentSize * idx / itemCount;
-                      controller.position.animateTo(
-                        target,
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.easeInOut,
-                      );
-                    },
-                  ),
-                );
-              }),
-        ),
-        Expanded(
-          child: ListView.builder(
-            controller: controller,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text("Item at index $index."),
-              );
-            },
-            itemCount: itemCount,
-          ),
-        )
-      ],
-    );
   }
 }

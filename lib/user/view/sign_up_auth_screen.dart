@@ -166,11 +166,10 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                         top: 20,
                         right: 70,
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.23,
-                          height: MediaQuery.of(context).size.width * 0.10,
-                          // 카운트다운 실행되는 부분 !!
-                          child: _CountdownPage(resetCount: authMinCount),
-                        ),
+                            width: MediaQuery.of(context).size.width * 0.23,
+                            height: MediaQuery.of(context).size.width * 0.10,
+                            // 카운트다운 실행되는 부분 !!
+                            child: _CountdownPage(resetCount: authMinCount)),
                       ),
                       Positioned(
                         right: 10,
@@ -192,7 +191,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                                         ?.unfocus();
                                     return;
                                   }
-                                  isRightCertifyNumber = true; // 확인 가정하는 부분
+                                  isRightCertifyNumber = false; // 확인 가정하는 부분
                                   if (isRightCertifyNumber!) {
                                     showToast(msg: "인증되었습니다 😊");
                                     FocusManager.instance.primaryFocus
@@ -285,45 +284,58 @@ class _CountdownPage extends StatefulWidget {
 class _CountdownPageState extends State<_CountdownPage> {
   static const validTime = 300;
   int totalSeconds = validTime;
-  bool isRunning = false;
   Timer? timer;
   int currentNumber = 0;
   void onTick(Timer timer) {
     print('onTick!!!!');
     if (totalSeconds == 0) {
-      isRunning = false;
       timer.cancel();
     } else {
-      setState(() {
-        totalSeconds = totalSeconds - 1;
-      });
+      if (mounted) {
+        setState(() {
+          totalSeconds = totalSeconds - 1;
+        });
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    timer = null;
+    super.dispose();
   }
 
   void onStart() {
     totalSeconds = validTime;
     print('onStartPressed');
-    timer = Timer.periodic(
-      const Duration(seconds: 1),
-      onTick,
-    );
-    setState(() {
-      isRunning = true;
-    });
+    resetTimer();
+    setState(() {});
+  }
+
+  void stopTimer() {
+    setState(() => timer?.cancel());
+  }
+
+  void resetTimer() {
+    stopTimer();
+    setState(() => timer = Timer.periodic(
+          const Duration(seconds: 1),
+          onTick,
+        ));
   }
 
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
-
+    print('format');
     return duration.toString().split(".").first.substring(2, 7);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (currentNumber < widget.resetCount && !isRunning) {
+    if (currentNumber < widget.resetCount) {
       onStart();
       currentNumber = widget.resetCount;
-      isRunning = false;
     }
     return Text(
       format(totalSeconds),

@@ -23,6 +23,7 @@ class LoginLayout extends StatelessWidget {
         statusBarColor: Colors.white,
         systemNavigationBarColor: Colors.white));
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor ?? Colors.white,
       appBar: renderAppBar(hasAppBar),
       body: Padding(
