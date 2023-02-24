@@ -11,8 +11,8 @@ class AlarmCard extends StatefulWidget {
   final String type;
   final String content;
   final String? imgUrl;
-
   final String id;
+
   const AlarmCard({
     super.key,
     this.imgUrl,
@@ -34,14 +34,17 @@ class _AlarmCardState extends State<AlarmCard> {
   Future initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     final checkedAlarm = prefs.getStringList('checkedAlarm');
+
     if (checkedAlarm != null) {
+      //prefs.clear(); // 초기화
+      //checkedAlarm.clear(); // 초기화
       if (checkedAlarm.contains(widget.id) == true) {
         setState(() {
           checked = true;
-          //checkedAlarm.clear(); 초기화
         });
       }
     } else {
+      // null이면 생성
       await prefs.setStringList('checkedAlarm', []);
     }
   }
@@ -51,12 +54,14 @@ class _AlarmCardState extends State<AlarmCard> {
     final checkedAlarm = prefs.getStringList('checkedAlarm');
 
     if (checkedAlarm != null) {
-      checkedAlarm.add(widget.id);
-
+      print(widget.id);
+      if (!checked) {
+        checkedAlarm.add(widget.id);
+      }
       await prefs.setStringList('checkedAlarm', checkedAlarm);
       setState(() {
-        checked = true;
         print(checkedAlarm);
+        checked = true;
       });
     }
   }
@@ -69,6 +74,8 @@ class _AlarmCardState extends State<AlarmCard> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     late String icon;
     if (widget.type == '쿠폰') {
       icon = coupon_icon;
@@ -81,8 +88,8 @@ class _AlarmCardState extends State<AlarmCard> {
       onTap: onHeartTap,
       child: Container(
         color: checked ? Colors.white : PRIMARY_LIGHT_COLOR,
-        height: MediaQuery.of(context).size.height * 0.15,
-        width: MediaQuery.of(context).size.width,
+        height: height * 0.15,
+        width: width,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
@@ -92,7 +99,7 @@ class _AlarmCardState extends State<AlarmCard> {
                 padding: const EdgeInsets.only(top: 20),
                 child: SvgPicture.asset(
                   icon,
-                  height: MediaQuery.of(context).size.height * 0.06,
+                  height: height * 0.06,
                 ),
               ),
               const SizedBox(width: 20),
@@ -101,7 +108,7 @@ class _AlarmCardState extends State<AlarmCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.7,
+                      width: width * 0.7,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,8 +131,8 @@ class _AlarmCardState extends State<AlarmCard> {
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    width: MediaQuery.of(context).size.width * 0.7,
+                    height: height * 0.07,
+                    width: width * 0.7,
                     child: AutoSizeText(
                       widget.content,
                       maxLines: 2,

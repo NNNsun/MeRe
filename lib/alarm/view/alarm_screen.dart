@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:new_me_re/alarm/component/alarm_card.dart';
 import 'package:new_me_re/alarm/model/alarm_model.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AlarmScreen extends StatefulWidget {
   const AlarmScreen({
@@ -14,8 +13,6 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> {
-  late SharedPreferences prefs;
-  bool checked = false;
   var alarms = List<AlarmModel>.empty(growable: true);
   createTempAlarmList() {
     String typeConvert;
@@ -60,13 +57,3 @@ class _AlarmScreenState extends State<AlarmScreen> {
         ));
   }
 }
-
-
-
-// AlarmCard(
-//         title: '쿠폰소진안내',
-//         type: '쿠폰',
-//         remainingTime: '방금',
-//         content: '온어데일리 전음료 1000원 할인이 3일 뒤 소진됩니다.',
-//         checked: true,
-//       ),

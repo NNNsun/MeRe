@@ -15,6 +15,7 @@ class DefaultLayout extends StatelessWidget {
   final String? firstActionBtn;
   final String? secondActionBtn;
   final Widget? bottomSheet;
+  final Function()? back_btnFuction;
 
   const DefaultLayout({
     required this.child,
@@ -28,6 +29,7 @@ class DefaultLayout extends StatelessWidget {
     this.firstActionBtn,
     this.secondActionBtn,
     this.bottomSheet,
+    this.back_btnFuction,
   }) : super(key: key);
 
   @override
@@ -60,7 +62,7 @@ class DefaultLayout extends StatelessWidget {
                   back_btn,
                   height: 18,
                 ),
-                onPressed: () {},
+                onPressed: back_btnFuction, // back_btn 함수가 없다면 그냥 뒤로가기로 구현하기
               )
             : null,
         actions: firstActionBtn != null
