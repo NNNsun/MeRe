@@ -13,6 +13,6 @@
 * StoreList Screen ✔️
 * StoreDetail Screen ✔️
 * MenuDetail Screen ✔️
- * baeminUi 분석 ✔️
+ * baemin Ui 분석 ✔️
 * Shopping Cart Screen ✔️
 * Order Detail Screen 진행중...
