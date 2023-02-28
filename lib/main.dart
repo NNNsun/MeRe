@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
+import 'package:new_me_re/user/view/login_screen.dart';
+import 'package:new_me_re/user/view/sign_up_auth_screen.dart';
+import 'package:new_me_re/user/view/sign_up_user_info_screen.dart';
 
 import 'alarm/view/alarm_screen.dart';
+import 'common/view/root.dart';
+import 'order/component/store_detail_root.dart';
+import 'order/view/order_detail_screen.dart';
+import 'order/view/order_menu_screen.dart';
 import 'order/view/shopping_basket.dart';
 
 void main() {
@@ -23,40 +30,41 @@ class _App extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: MaterialApp(
-        scrollBehavior: MyBehavior(),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'NotoSans',
-          textSelectionTheme: const TextSelectionThemeData(
-            selectionHandleColor: PRIMARY_COLOR,
+          scrollBehavior: MyBehavior(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'NotoSans',
+            textSelectionTheme: const TextSelectionThemeData(
+              selectionHandleColor: PRIMARY_COLOR,
+            ),
           ),
-        ),
-        // theme: ThemeData(
-        //   primaryColor: Colors.blue,
-        //   visualDensity: VisualDensity.adaptivePlatformDensity,
-        // ),
-        //routerConfig: router,
+          // theme: ThemeData(
+          //   primaryColor: Colors.blue,
+          //   visualDensity: VisualDensity.adaptivePlatformDensity,
+          // ),
+          //routerConfig: router,
 
-        home: const AlarmScreen(), // 홈-알림 화면
-        //ShoppingBasket() // 장바구니
+          home: const OrderDetailScreen() // 주문명세서
 
-        // const SignUpAuthScreen(), // 회원가입- SMS인증
+          // ShoppingBasket() // 장바구니
 
-        //const OrderDetailScreen() // 주문명세서
+          //const StoreDetailRoot() // 주문하기 Root
 
-        //const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
+          // const OrderMenuScreen() // 메뉴상세
 
-        //const StoreDetailRoot() // 주문하기 Root
+          // const Root(),
 
-        //const OrderMenuScreen() // 메뉴상세
+          // const SignUpAuthScreen(), // 회원가입- SMS인증
 
-        // const Root(),
-        //const LoginScreen(), // 첫 로그인 화면
+          // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력
 
-        //const StoreListScreen() // 주문하기- 매장리스트
+          // const LoginScreen(), // 첫 로그인 화면
 
-        // const AlarmScreen(), // 홈-알림 화면
-      ),
+          // const AlarmScreen(), // 홈-알림 화면
+          // const AlarmScreen(), // 홈-알림 화면
+
+          //const StoreListScreen() // 주문하기- 매장리스트
+          ),
     );
   }
 }

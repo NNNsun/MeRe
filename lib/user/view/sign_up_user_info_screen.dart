@@ -102,27 +102,29 @@ class _SignUpUserInfoScreenState extends State<SignUpUserInfoScreen> {
                     },
                   ),
                   Positioned(
-                    top: 13,
                     right: 10,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.23,
-                      height: MediaQuery.of(context).size.width * 0.09,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          // api 요청
-                          // 중복일 경우
-                          isUnique = true;
-                          if (isUnique) {
-                            checkNickName('이 닉네임을 사용 할텐가?');
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: const StadiumBorder(),
-                          backgroundColor: PRIMARY_COLOR,
-                          disabledBackgroundColor: INPUT_BG_COLOR,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.23,
+                        height: MediaQuery.of(context).size.width * 0.09,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            // api 요청
+                            // 중복일 경우
+                            isUnique = true;
+                            if (isUnique) {
+                              checkNickName('이 닉네임을 사용 할텐가?');
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: const StadiumBorder(),
+                            backgroundColor: PRIMARY_COLOR,
+                            disabledBackgroundColor: INPUT_BG_COLOR,
+                          ),
+                          child: const Text('중복확인'),
                         ),
-                        child: const Text('중복확인'),
                       ),
                     ),
                   ),

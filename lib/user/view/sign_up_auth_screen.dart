@@ -103,47 +103,49 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                       ),
                     ),
                     Positioned(
-                      top: 13,
                       right: 10,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.23,
-                        height: MediaQuery.of(context).size.width * 0.10,
-                        child: ElevatedButton(
-                          onPressed: (poneNumber.length < 13 ||
-                                  authMaxCount <= 0 ||
-                                  disableAuth ||
-                                  disableTime)
-                              ? null
-                              : () {
-                                  setState(() {
-                                    print('인증하기 click');
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.23,
+                          height: MediaQuery.of(context).size.width * 0.10,
+                          child: ElevatedButton(
+                            onPressed: (poneNumber.length < 13 ||
+                                    authMaxCount <= 0 ||
+                                    disableAuth ||
+                                    disableTime)
+                                ? null
+                                : () {
+                                    setState(() {
+                                      print('인증하기 click');
 
-                                    if (poneNumber.length == 13) {
-                                      isClick = true;
-                                      if (authMaxCount > 0) {
-                                        --authMaxCount;
-                                        ++authMinCount;
-                                      }
-                                      disableTime = true;
-                                      Future.delayed(
-                                          // 10초 딜레이
-                                          const Duration(seconds: 10), () {
-                                        setState(() {
-                                          disableTime = false;
+                                      if (poneNumber.length == 13) {
+                                        isClick = true;
+                                        if (authMaxCount > 0) {
+                                          --authMaxCount;
+                                          ++authMinCount;
+                                        }
+                                        disableTime = true;
+                                        Future.delayed(
+                                            // 10초 딜레이
+                                            const Duration(seconds: 10), () {
+                                          setState(() {
+                                            disableTime = false;
+                                          });
                                         });
-                                      });
-                                    } else {
-                                      isClick = false;
-                                    }
-                                    // 해당 전화번호 기기로 인증번호 전송
-                                  });
-                                },
-                          style: ElevatedButton.styleFrom(
-                            shape: const StadiumBorder(),
-                            backgroundColor: PRIMARY_COLOR,
-                            disabledBackgroundColor: Colors.black12,
+                                      } else {
+                                        isClick = false;
+                                      }
+                                      // 해당 전화번호 기기로 인증번호 전송
+                                    });
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              backgroundColor: PRIMARY_COLOR,
+                              disabledBackgroundColor: Colors.black12,
+                            ),
+                            child: const Text('인증하기'),
                           ),
-                          child: const Text('인증하기'),
                         ),
                       ),
                     ),
@@ -174,7 +176,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                       Positioned(
                         right: 10,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          padding: const EdgeInsets.symmetric(vertical: 6),
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.23,
                             height: MediaQuery.of(context).size.width * 0.10,
@@ -191,7 +193,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                                         ?.unfocus();
                                     return;
                                   }
-                                  isRightCertifyNumber = false; // 확인 가정하는 부분
+                                  isRightCertifyNumber = true; // 확인 가정하는 부분
                                   if (isRightCertifyNumber!) {
                                     showToast(msg: "인증되었습니다 😊");
                                     FocusManager.instance.primaryFocus
