@@ -262,7 +262,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
   void _createOverlay() {
     if (_overlayEntry == null) {
       _overlayEntry = _customDropdown();
-      Overlay.of(context)?.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
     }
   }
 

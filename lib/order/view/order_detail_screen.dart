@@ -9,6 +9,7 @@ class OrderDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return DefaultLayout(
       backgroundColor: Colors.white,
       title: '결제하기',
@@ -59,16 +60,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Divider(
-                color: INPUT_BG_COLOR,
-                height: 12,
-                thickness: 12,
-              ),
-            ),
-          ),
+          _renderDivider(),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -92,16 +84,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Divider(
-                color: INPUT_BG_COLOR,
-                height: 12,
-                thickness: 12,
-              ),
-            ),
-          ),
+          _renderDivider(),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -219,16 +202,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Divider(
-                color: INPUT_BG_COLOR,
-                height: 12,
-                thickness: 12,
-              ),
-            ),
-          ),
+          _renderDivider(),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -236,7 +210,7 @@ class OrderDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 Text(
-                  '방문시간',
+                  '결제수단',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
@@ -246,7 +220,240 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
+          _renderDivider(),
+          SliverToBoxAdapter(
+              child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '할인적용',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Divider(height: 40),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        child: Text(
+                          "쿠폰(5)",
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: Container(
+                        padding: EdgeInsets.only(right: 15),
+                        child: Text(
+                          "0원",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                        flex: 3,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: PRIMARY_COLOR,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                          ),
+                          child: Text("쿠폰선택"),
+                        )),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          child: Text(
+                            "포인트",
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 8,
+                        child: Container(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: CustomTextFormField(
+                                  hintText: "0",
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "P",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: PRIMARY_COLOR,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50)),
+                            ),
+                            child: Text("전액사용"),
+                          )),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 4,
+                    bottom: 10,
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          flex: 2,
+                          child: SizedBox(
+                            width: 10,
+                          )),
+                      Expanded(
+                        flex: 8,
+                        child: Text(
+                          "보유포인트: 2,053P",
+                          style: TextStyle(color: IMPACT_COLOR_DARK_GRAY),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child: SizedBox(
+                            width: 10,
+                          )),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
+          _renderDivider(),
+          SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '결제금액',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '주문금액',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        '10,500원',
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                    ]),
+                SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '할인적용',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    Text(
+                      '- 0원',
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 4),
+                  child: Divider(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '총 결제금액',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      '10,500 원',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                )
+              ],
+            ),
+          )),
         ],
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _renderDivider() {
+    return const SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        child: Divider(
+          color: INPUT_BG_COLOR,
+          height: 12,
+          thickness: 12,
+        ),
       ),
     );
   }
