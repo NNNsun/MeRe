@@ -30,27 +30,6 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
   bool pauseRectGetterIndex = false;
   Map<int, dynamic> itemKeys = {};
 
-  bool onScrollNotification(ScrollNotification notification) {
-    if (pauseRectGetterIndex) return true;
-    int lastTabIndex = _menuTabController.length - 1;
-    List<int> visibleItems = getVisibleItemsIndex();
-
-    bool reachLastTabIndex = visibleItems.isNotEmpty &&
-        visibleItems.length <= 2 &&
-        visibleItems.last == lastTabIndex;
-    if (reachLastTabIndex) {
-      _menuTabController.animateTo(lastTabIndex);
-    } else {
-      int sumIndex = visibleItems.reduce((value, element) => value + element);
-      // 메뉴탭바의 가운데로 이동
-      int middleIndex = sumIndex ~/ visibleItems.length;
-      if (_menuTabController.index != middleIndex) {
-        _menuTabController.animateTo(middleIndex);
-      }
-    }
-    return false;
-  }
-
   void animateAndScrollTo(int index) {
     pauseRectGetterIndex = true;
     _menuTabController.animateTo(index);
@@ -75,51 +54,80 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
     scrollController.dispose();
   }
 
-  List<int> getVisibleItemsIndex() {
-    Rect? rect = RectGetter.getRectFromKey(wholePage);
-    List<int> items = [];
-    if (rect == null) return items;
-    itemKeys.forEach((index, key) {
-      Rect? itemRect = RectGetter.getRectFromKey(key);
-      if (itemRect == null) return;
-      if (itemRect.top > rect.bottom) return;
-      if (itemRect.bottom < rect.top) return;
-      items.add(index);
-    });
-
-    return items;
-  }
-
-  /// ListItem
-  Widget buildCategoryItem(int index) {
-    itemKeys[index] = RectGetter.createGlobalKey();
-    //Category category = data.categories[index];
-    return RectGetter(
-      key: itemKeys[index],
-      child: AutoScrollTag(
-        key: ValueKey(index),
-        index: index,
-        controller: scrollController,
-        //child: CategorySection(category: category),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     double minBarSize = MediaQuery.of(context).padding.top + kToolbarHeight;
     Size size = MediaQuery.of(context).size;
     double imageHeight = size.height * 0.3 + kToolbarHeight;
     double maxBarSize = size.height * 0.58;
+    double bottomSheet = size.height * 0.11;
+    bool isFavorite = false;
+    bool choiceMenu = false;
     return Scaffold(
+      backgroundColor: Colors.white,
+      bottomSheet: choiceMenu == true
+          ? Container(
+              height: bottomSheet,
+              width: size.width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 0,
+                    blurRadius: 8.0,
+                    offset: const Offset(3, 2), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 20, right: 20, top: 14, bottom: bottomSheet / 3.5),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(PRIMARY_COLOR),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        cart_btn,
+                        height: bottomSheet / 5,
+                      ),
+                      const Text(
+                        ' 총 ',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      const Text(
+                        '2개',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const Text(
+                        ' 주문하러가기',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : null,
       body: DefaultTabController(
         length: 3,
         child: NestedScrollView(
           physics: const NeverScrollableScrollPhysics(),
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              storeDetailAppBar(
-                  size, imageHeight, pageController, maxBarSize, minBarSize),
+              storeDetailAppBar(size, imageHeight, pageController, maxBarSize,
+                  minBarSize, isFavorite),
               SliverOverlapAbsorber(
                 handle:
                     NestedScrollView.sliverOverlapAbsorberHandleFor(context),
@@ -133,7 +141,9 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
           },
           body: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
+            var height = size.height;
             top = size.height - constraints.biggest.height;
+
             return TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: _tabController,
@@ -151,22 +161,180 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                             SliverPersistentHeader(
                               delegate: MenuSearchHeaderDelegate(
                                   menuTabController: _menuTabController),
-                              pinned: true,
+                              pinned: false,
                             ),
+                            SliverToBoxAdapter(
+                                child: Container(
+                              color: Colors.white,
+                              child: const Padding(
+                                padding: EdgeInsets.only(
+                                  left: 20,
+                                  right: 20,
+                                ),
+                                child: Text(
+                                  "🥐빵밤 할인🥨",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
+                                ),
+                              ),
+                            )),
                             SliverList(
                               delegate: SliverChildListDelegate([
-                                Container(color: Colors.red, height: 200.0),
-                                Container(color: Colors.purple, height: 200.0),
-                                Container(color: Colors.green, height: 200.0),
-                                Container(color: Colors.teal, height: 200.0),
-                                Container(color: Colors.white, height: 200.0),
-                                Container(color: Colors.cyan, height: 200.0),
-                                Container(color: Colors.red, height: 200.0),
+                                Column(
+                                  children: [
+                                    Container(
+                                      color: Colors.white,
+                                      height: height * 0.18,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 20),
+                                            child: Container(
+                                              clipBehavior: Clip.hardEdge,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: Image.asset(
+                                                fit: BoxFit.cover,
+                                                'asset/temp/home_img/cafe_data_img/cafe_menu/menu_8.jpg',
+                                                height: height * 0.18,
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                '뉴욕 치즈 타르트',
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 8),
+                                                child: Container(
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 6,
+                                                        ),
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                PRIMARY_LIGHT_COLOR,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        4)),
+                                                        child: const Text(
+                                                          "30%",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  PRIMARY_COLOR,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 14),
+                                                        ),
+                                                      ),
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 6),
+                                                        child: Text(
+                                                          '2,000',
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                      const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 6),
+                                                        child: Text(
+                                                          '원',
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const Text(
+                                                        '3,500원',
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            color:
+                                                                IMPACT_COLOR_DARK_GRAY,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .lineThrough),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
+                                                decoration: BoxDecoration(
+                                                  color: INPUT_BG_COLOR,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Row(
+                                                  children: const [
+                                                    Text(
+                                                      "잔여수량",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    SizedBox(width: 4),
+                                                    Text(
+                                                      "2",
+                                                      style: TextStyle(
+                                                          color:
+                                                              PRIMARY_Dark_COLOR),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 20),
+                                      child: Divider(height: 1),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                    color: Colors.white,
+                                    height: bottomSheet + 50),
                               ]),
                             )
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Column(
@@ -352,8 +520,13 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
   }
 }
 
-SliverAppBar storeDetailAppBar(Size size, double imageHeight,
-    PageController controller, double maxBarSize, double minBarSize) {
+SliverAppBar storeDetailAppBar(
+    Size size,
+    double imageHeight,
+    PageController controller,
+    double maxBarSize,
+    double minBarSize,
+    bool isFavorite) {
   var top = 0.0;
   bool isFit = false;
 
@@ -395,6 +568,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                     PageView.builder(
                       controller: controller,
                       itemBuilder: (context, index) {
+                        // 이미지 네트워크 변경 필요
                         return ExtendedImage.asset(
                             'asset/temp/home_img/cafe_data_img/cafe_main/cafe12.jpg',
                             fit: BoxFit.cover);
@@ -419,9 +593,6 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                     ),
                   ]),
                 ),
-                const SizedBox(
-                  height: 2,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -434,6 +605,7 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                             Row(
                               children: const [
                                 TagCardWidget(title: '애견동반'),
+                                TagCardWidget(title: '노키즈존'),
                                 TagCardWidget(title: '노키즈존'),
                               ],
                             ),
@@ -572,6 +744,9 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                             GestureDetector(
                               onTap: () {
                                 print('3');
+
+                                isFavorite = !isFavorite;
+                                print(isFavorite);
                               },
                               child: SizedBox(
                                 height: 45,
@@ -580,10 +755,15 @@ SliverAppBar storeDetailAppBar(Size size, double imageHeight,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     const SizedBox(width: 24),
-                                    SvgPicture.asset(
-                                      store_heart_icon,
-                                      height: 16,
-                                    ),
+                                    isFavorite
+                                        ? SvgPicture.asset(
+                                            heart_full_icon,
+                                            height: 16,
+                                          )
+                                        : SvgPicture.asset(
+                                            store_heart_icon,
+                                            height: 16,
+                                          ),
                                     const SizedBox(width: 8),
                                     const Padding(
                                       padding: EdgeInsets.only(bottom: 3),
@@ -630,11 +810,11 @@ class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      height: 100,
       color: Colors.white,
       child: CustomTextFormField(
-        hintText: '${'카페명'} 메뉴를 검색하세요',
+        hintText: '지금 할인하는 디저트를 검색해보세요.',
         onChanged: (String value) {},
         autofocus: false,
         isSearch: true,
@@ -645,10 +825,10 @@ class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 50;
+  double get maxExtent => 100;
 
   @override
-  double get minExtent => 50;
+  double get minExtent => 100;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {

@@ -223,24 +223,24 @@ class OrderDetailScreen extends StatelessWidget {
           _renderDivider(),
           SliverToBoxAdapter(
               child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   '할인적용',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Divider(height: 40),
+                const Divider(height: 40),
                 Row(
                   children: [
                     Expanded(
                       flex: 2,
                       child: Container(
-                        child: Text(
+                        child: const Text(
                           "쿠폰(5)",
                           style: TextStyle(
                             fontSize: 15,
@@ -251,8 +251,8 @@ class OrderDetailScreen extends StatelessWidget {
                     Expanded(
                       flex: 8,
                       child: Container(
-                        padding: EdgeInsets.only(right: 15),
-                        child: Text(
+                        padding: const EdgeInsets.only(right: 15),
+                        child: const Text(
                           "0원",
                           style: TextStyle(
                             fontSize: 15,
@@ -272,7 +272,7 @@ class OrderDetailScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50)),
                           ),
-                          child: Text("쿠폰선택"),
+                          child: const Text("쿠폰선택"),
                         )),
                   ],
                 ),
@@ -283,7 +283,7 @@ class OrderDetailScreen extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Container(
-                          child: Text(
+                          child: const Text(
                             "포인트",
                             style: TextStyle(
                               fontSize: 15,
@@ -294,7 +294,7 @@ class OrderDetailScreen extends StatelessWidget {
                       Expanded(
                         flex: 8,
                         child: Container(
-                          padding: EdgeInsets.only(right: 15),
+                          padding: const EdgeInsets.only(right: 15),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -304,10 +304,10 @@ class OrderDetailScreen extends StatelessWidget {
                                   onChanged: (value) {},
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
-                              Text(
+                              const Text(
                                 "P",
                                 style: TextStyle(
                                   fontSize: 15,
@@ -329,7 +329,7 @@ class OrderDetailScreen extends StatelessWidget {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50)),
                             ),
-                            child: Text("전액사용"),
+                            child: const Text("전액사용"),
                           )),
                     ],
                   ),
@@ -340,7 +340,7 @@ class OrderDetailScreen extends StatelessWidget {
                     bottom: 10,
                   ),
                   child: Row(
-                    children: [
+                    children: const [
                       Expanded(
                           flex: 2,
                           child: SizedBox(
@@ -371,17 +371,17 @@ class OrderDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   '결제금액',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Text(
                         '주문금액',
                         style: TextStyle(
@@ -395,12 +395,12 @@ class OrderDetailScreen extends StatelessWidget {
                         ),
                       ),
                     ]),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text(
                       '할인적용',
                       style: TextStyle(
@@ -415,13 +415,13 @@ class OrderDetailScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.symmetric(vertical: 4),
                   child: Divider(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  children: const [
                     Text(
                       '총 결제금액',
                       style:
@@ -434,7 +434,7 @@ class OrderDetailScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 )
               ],

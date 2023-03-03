@@ -67,6 +67,7 @@ class CustomTextFormField extends StatelessWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: SvgPicture.asset(
                   search_icon,
+                  height: 12,
                 ))
             : null,
         contentPadding: const EdgeInsets.all(16),
