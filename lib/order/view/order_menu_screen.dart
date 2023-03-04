@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
-import 'package:new_me_re/common/const/service_logic.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
+import 'package:new_me_re/order/widget/discount_price_section.dart';
+import 'package:new_me_re/order/widget/remain_quantity.dart';
 
 class OrderMenuScreen extends StatefulWidget {
   const OrderMenuScreen({super.key});
@@ -14,6 +15,7 @@ class OrderMenuScreen extends StatefulWidget {
 
 class _OrderMenuScreenState extends State<OrderMenuScreen> {
   int count = 1;
+  String selectedRadio = 'ddd';
   void addCount() {
     setState(() {
       if (count > 0) {
@@ -54,30 +56,37 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        '온어데일리',
-                        style: TextStyle(color: BODY_TEXT_COLOR_GRAY),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            '온어데일리',
+                            style: TextStyle(
+                                color: BODY_TEXT_COLOR_GRAY, fontSize: 16),
+                          ),
+                          RemainQuantity(remainQuantity: 2)
+                        ],
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        '바닐라딜라이트라떼',
+                        '버건디가나슈케이크',
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 20),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        calcStringToWon(5000),
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                      const DiscountPriceSection(
+                          discountRate: 30,
+                          discountPrice: 2000,
+                          oldPrice: 3500),
                       const SizedBox(height: 8),
                       const Text(
-                        '상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상 품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설 명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명상품설명',
+                        '수제 가나슈를 듬뿍 넣고 구운 초콜릿 케이크입니다. 짱 맛있으니까 다들 한번 드셔보세요 츄라이츄라이.',
                         maxLines: 5,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 const Divider(
                   color: INPUT_BORDER_COLOR,
                   thickness: 2,
@@ -91,7 +100,7 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -110,8 +119,14 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                                 onPressed: subCount,
                                 icon: SvgPicture.asset(minus_btn)),
                             Stack(children: [
-                              SvgPicture.asset(
-                                count_box,
+                              Container(
+                                height: 34,
+                                width: 54,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color: IMPACT_COLOR_LIGHT_GRAY)),
                               ),
                               Positioned.fill(
                                   child: Align(
@@ -144,16 +159,40 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
           // 1. 무조건 하나만 선택해야하는 옵션
           // 2. 여러개 선택할수있는 옵션
           // 3. 옵션 자체의 갯수를 정하는 기능
+
+          _renderOptionHeader(),
+
           SliverList(
             delegate: SliverChildListDelegate([
-              const Text(
-                '필수옵션',
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+              RadioListTile<String>(
+                activeColor: Colors.red,
+                title: Align(
+                  alignment: const Alignment(-1.19, 0),
+                  child: Container(
+                      color: Colors.amber, child: const Text("딸기잼 추가")),
+                ),
+                value: "HHH",
+                secondary: const Text("+500원"),
+                groupValue: selectedRadio,
+                onChanged: (val) {
+                  print(val);
+                },
               ),
-              Container(color: Colors.purple, height: 100.0),
             ]),
           )
         ],
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _renderOptionHeader() {
+    return const SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Text(
+          "추가옵션(선택)",
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+        ),
       ),
     );
   }

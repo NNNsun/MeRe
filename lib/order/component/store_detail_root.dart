@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:new_me_re/common/component/custom_appbar.dart';
 import 'package:new_me_re/order/view/store_review_page_screen.dart';
+import 'package:new_me_re/order/widget/discount_price_section.dart';
+import 'package:new_me_re/order/widget/remain_quantity.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -30,14 +32,6 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
   bool pauseRectGetterIndex = false;
   Map<int, dynamic> itemKeys = {};
 
-  void animateAndScrollTo(int index) {
-    pauseRectGetterIndex = true;
-    _menuTabController.animateTo(index);
-    scrollController
-        .scrollToIndex(index, preferPosition: AutoScrollPosition.begin)
-        .then((value) => pauseRectGetterIndex = false);
-  }
-
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3); // list 길이
@@ -62,7 +56,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
     double maxBarSize = size.height * 0.58;
     double bottomSheet = size.height * 0.11;
     bool isFavorite = false;
-    bool choiceMenu = false;
+    bool choiceMenu = true;
     return Scaffold(
       backgroundColor: Colors.white,
       bottomSheet: choiceMenu == true
@@ -209,112 +203,21 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
-                                              const Text(
+                                            children: const [
+                                              Text(
                                                 '뉴욕 치즈 타르트',
                                                 style: TextStyle(fontSize: 16),
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 8),
-                                                child: Container(
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 6,
-                                                        ),
-                                                        decoration: BoxDecoration(
-                                                            color:
-                                                                PRIMARY_LIGHT_COLOR,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4)),
-                                                        child: const Text(
-                                                          "30%",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  PRIMARY_COLOR,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 14),
-                                                        ),
-                                                      ),
-                                                      const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                left: 6),
-                                                        child: Text(
-                                                          '2,000',
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                      ),
-                                                      const Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                right: 6),
-                                                        child: Text(
-                                                          '원',
-                                                          style: TextStyle(
-                                                            fontSize: 18,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      const Text(
-                                                        '3,500원',
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                                IMPACT_COLOR_DARK_GRAY,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough),
-                                                      ),
-                                                    ],
-                                                  ),
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 8),
+                                                child: DiscountPriceSection(
+                                                  discountPrice: 2000,
+                                                  discountRate: 30,
+                                                  oldPrice: 3500,
                                                 ),
                                               ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 4),
-                                                decoration: BoxDecoration(
-                                                  color: INPUT_BG_COLOR,
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
-                                                ),
-                                                child: Row(
-                                                  children: const [
-                                                    Text(
-                                                      "잔여수량",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    SizedBox(width: 4),
-                                                    Text(
-                                                      "2",
-                                                      style: TextStyle(
-                                                          color:
-                                                              PRIMARY_Dark_COLOR),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
+                                              RemainQuantity(remainQuantity: 2),
                                             ],
                                           )
                                         ],
@@ -490,8 +393,8 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                                     ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 50,
+                                SizedBox(
+                                  height: bottomSheet + 50,
                                 )
                               ]),
                             )
@@ -504,6 +407,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                       ratings: 101, // 100이상인 경우 고려
                       grade: 4.5,
                       top: top,
+                      bottomGap: bottomSheet,
                       minBarSize: minBarSize,
                       scrollController: scrollController),
                 ]);

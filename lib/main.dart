@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
-
-import 'order/component/store_detail_root.dart';
+import 'package:new_me_re/order/view/order_menu_screen.dart';
 
 void main() {
   runApp(const _App());
@@ -36,13 +35,13 @@ class _App extends StatelessWidget {
           // ),
           //routerConfig: router,
 
-          home: const StoreDetailRoot() // 주문하기 Root
+          home: const OrderMenuScreen() // 메뉴상세
+
+          // const StoreDetailRoot() // 주문하기 Root
 
           // OrderDetailScreen() // 주문명세서
 
           // ShoppingBasket() // 장바구니
-
-          // const OrderMenuScreen() // 메뉴상세
 
           // const Root(),
 

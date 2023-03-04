@@ -13,6 +13,7 @@ class StoreReviewPageScreen extends StatefulWidget {
     required this.scrollController,
     required this.grade,
     required this.ratings,
+    required this.bottomGap,
   }) : super(key: key);
 
   final double top;
@@ -20,6 +21,7 @@ class StoreReviewPageScreen extends StatefulWidget {
   final AutoScrollController scrollController;
   final double grade;
   final int ratings;
+  final double bottomGap;
 
   @override
   State<StoreReviewPageScreen> createState() => _StoreReviewPageScreenState();
@@ -262,14 +264,20 @@ class _StoreReviewPageScreenState extends State<StoreReviewPageScreen> {
                           ),
                         ),
                         if (index != (10 - 1))
-                          const Divider(
-                            height: 3,
-                            color: IMPACT_COLOR_LIGHT_GRAY,
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Divider(
+                              height: 3,
+                              color: IMPACT_COLOR_LIGHT_GRAY,
+                            ),
                           ),
                       ],
                     );
                   }, childCount: 10),
                 ),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: widget.bottomGap),
+                )
               ],
             ),
           ),
