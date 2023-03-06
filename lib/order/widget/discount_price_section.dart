@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:new_me_re/common/const/color.dart';
 
 class DiscountPriceSection extends StatelessWidget {
-  const DiscountPriceSection({
-    super.key,
-    required this.discountRate,
-    required this.discountPrice,
-    required this.oldPrice,
-  });
+  const DiscountPriceSection(
+      {super.key,
+      required this.discountRate,
+      required this.discountPrice,
+      required this.oldPrice,
+      required this.priceTextSize});
   final int discountRate;
   final int discountPrice;
   final int oldPrice;
+  final double priceTextSize;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +20,7 @@ class DiscountPriceSection extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 6,
+              horizontal: 3,
             ),
             decoration: BoxDecoration(
                 color: PRIMARY_LIGHT_COLOR,
@@ -36,7 +37,8 @@ class DiscountPriceSection extends StatelessWidget {
             padding: const EdgeInsets.only(left: 6),
             child: Text(
               '$discountPrice',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: priceTextSize, fontWeight: FontWeight.w500),
             ),
           ),
           const Padding(

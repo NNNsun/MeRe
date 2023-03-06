@@ -4,6 +4,7 @@ import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
 import 'package:new_me_re/order/widget/discount_price_section.dart';
+import 'package:new_me_re/order/widget/price_bottom_sheet.dart';
 import 'package:new_me_re/order/widget/remain_quantity.dart';
 
 class OrderMenuScreen extends StatefulWidget {
@@ -32,12 +33,25 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
     });
   }
 
+  String _choice = "";
+
+  var checkBoxValue = List.filled(2, false);
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double bottomSheetSize = height * 0.1;
+    bool getChoice = false;
     return DefaultLayout(
       title: '메뉴상세',
       firstActionBtn: home_btn,
       secondActionBtn: cart_btn,
+      bottomSheet: PriceBottomSheet(
+          onTap: getChoice == false ? () {} : () {},
+          getChoice: getChoice,
+          bottomSheetSize: bottomSheetSize,
+          costAll: count * 2000,
+          isMenuDetail: true),
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -46,7 +60,7 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
               children: [
                 // network로 변경
                 Image.asset(
-                  'asset/temp/home_img/cafe_data_img/cafe_menu/menu_4.jpg',
+                  'asset/temp/home_img/cafe_data_img/cafe_menu/menu_13.jpg',
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   fit: BoxFit.cover,
@@ -75,13 +89,16 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                       ),
                       const SizedBox(height: 8),
                       const DiscountPriceSection(
-                          discountRate: 30,
-                          discountPrice: 2000,
-                          oldPrice: 3500),
+                        discountRate: 30,
+                        discountPrice: 2000,
+                        oldPrice: 3500,
+                        priceTextSize: 21,
+                      ),
                       const SizedBox(height: 8),
                       const Text(
                         '수제 가나슈를 듬뿍 넣고 구운 초콜릿 케이크입니다. 짱 맛있으니까 다들 한번 드셔보세요 츄라이츄라이.',
                         maxLines: 5,
+                        style: TextStyle(color: IMPACT_COLOR_DARK_GRAY),
                       ),
                     ],
                   ),
@@ -109,7 +126,7 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 16),
                       ),
-                      Container(
+                      SizedBox(
                         child: Row(
                           children: [
                             IconButton(
@@ -156,43 +173,182 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
             ],
           )),
           // 옵션 부분
-          // 1. 무조건 하나만 선택해야하는 옵션
+          // 1. 무조건 하나만 선택해야하는 옵션 + 기본
           // 2. 여러개 선택할수있는 옵션
           // 3. 옵션 자체의 갯수를 정하는 기능
 
-          _renderOptionHeader(),
-
+          // 1. 옵션 단일 선택 (무조건 선택해야 함)
           SliverList(
             delegate: SliverChildListDelegate([
-              RadioListTile<String>(
-                activeColor: Colors.red,
-                title: Align(
-                  alignment: const Alignment(-1.19, 0),
-                  child: Container(
-                      color: Colors.amber, child: const Text("딸기잼 추가")),
+              const Padding(
+                padding: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  bottom: 10,
                 ),
-                value: "HHH",
-                secondary: const Text("+500원"),
-                groupValue: selectedRadio,
-                onChanged: (val) {
-                  print(val);
-                },
+                child: Text(
+                  "추가옵션",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: RadioListTile<String>(
+                  contentPadding: const EdgeInsets.only(left: 10, right: 20),
+                  dense: true,
+                  activeColor: PRIMARY_COLOR,
+
+                  title: const Align(
+                    alignment: Alignment(-1.19, 0),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        "기본ㄴㄴㄴㄴㄴ",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  value: "기본",
+                  secondary: const Text("+0원"), // 가격 도출
+                  groupValue: _choice,
+                  onChanged: (val) {
+                    setState(() {
+                      getChoice = true;
+                      _choice = val!;
+                      print("500");
+                      print(val);
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: RadioListTile<String>(
+                  contentPadding: const EdgeInsets.only(left: 10, right: 20),
+                  dense: true,
+                  activeColor: PRIMARY_COLOR,
+                  title: const Align(
+                      alignment: Alignment(-1.19, 0),
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 4),
+                        child: Text(
+                          "딸기잼 추가",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      )),
+                  value: "딸기잼",
+                  secondary: const Text("+500원"),
+                  groupValue: _choice,
+                  onChanged: (val) {
+                    setState(() {
+                      _choice = val!; // String
+                      print(val);
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 40,
+                child: RadioListTile<String>(
+                  contentPadding: const EdgeInsets.only(left: 10, right: 20),
+                  dense: true,
+                  activeColor: PRIMARY_COLOR,
+
+                  title: const Align(
+                    alignment: Alignment(-1.19, 0),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 4),
+                      child: Text(
+                        "사과잼 추가",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  value: "사과잼",
+                  secondary: const Text("+500원"), // 가격 도출
+                  groupValue: _choice,
+                  onChanged: (val) {
+                    setState(() {
+                      _choice = val!;
+                      print("500");
+                      print(val);
+                    });
+                  },
+                ),
               ),
             ]),
+          ),
+          // 2. 옵션 다중 선택
+          SliverList(
+            delegate: SliverChildListDelegate([
+              const Padding(
+                padding: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  bottom: 10,
+                ),
+                child: Text(
+                  "추가옵션(선택)",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                ),
+              ),
+              SizedBox(
+                  height: 40,
+                  child: CheckboxListTile(
+                    contentPadding: const EdgeInsets.only(left: 10, right: 20),
+                    secondary: const Text('+500원'),
+                    checkboxShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    activeColor: PRIMARY_COLOR,
+                    dense: true,
+                    title: const Align(
+                      alignment: Alignment(-1.13, 0),
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 4),
+                          child: Text(
+                            '초 추가',
+                            style: TextStyle(fontSize: 16),
+                          )),
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: checkBoxValue[0],
+                    onChanged: (newValue) {
+                      setState(() {
+                        checkBoxValue[0] = newValue!;
+                      });
+                    },
+                  )),
+              SizedBox(
+                  height: 40,
+                  child: CheckboxListTile(
+                    contentPadding: const EdgeInsets.only(left: 10, right: 20),
+                    checkboxShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    activeColor: PRIMARY_COLOR,
+                    dense: true,
+                    title: const Align(
+                      alignment: Alignment(-1.13, 0),
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 4),
+                          child: Text(
+                            '포크 추가',
+                            style: TextStyle(fontSize: 16),
+                          )),
+                    ),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: checkBoxValue[1],
+                    onChanged: (newValue) {
+                      setState(() {
+                        checkBoxValue[1] = newValue!;
+                      });
+                    },
+                  )),
+            ]),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: bottomSheetSize + 10),
           )
         ],
-      ),
-    );
-  }
-
-  SliverToBoxAdapter _renderOptionHeader() {
-    return const SliverToBoxAdapter(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Text(
-          "추가옵션(선택)",
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-        ),
       ),
     );
   }

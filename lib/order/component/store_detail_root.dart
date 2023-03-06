@@ -215,6 +215,7 @@ class _StoreDetailRootState extends State<StoreDetailRoot>
                                                   discountPrice: 2000,
                                                   discountRate: 30,
                                                   oldPrice: 3500,
+                                                  priceTextSize: 18,
                                                 ),
                                               ),
                                               RemainQuantity(remainQuantity: 2),

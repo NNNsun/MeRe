@@ -28,6 +28,7 @@ class _App extends StatelessWidget {
             textSelectionTheme: const TextSelectionThemeData(
               selectionHandleColor: PRIMARY_COLOR,
             ),
+            unselectedWidgetColor: IMPACT_COLOR_LIGHT_GRAY,
           ),
           // theme: ThemeData(
           //   primaryColor: Colors.blue,

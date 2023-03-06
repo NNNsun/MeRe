@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
-import 'package:new_me_re/order/widget/basket_bottom_sheet.dart';
+import 'package:new_me_re/order/widget/price_bottom_sheet.dart';
 
 import '../../common/const/service_logic.dart';
 import '../widget/order_basket_btn.dart';
@@ -52,8 +52,8 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
       firstActionBtn: home_btn,
       bottomSheet: isEmpty == true
           ? null
-          : BasketBottomSheet(
-              bottomSheetSize: bottomSheetSize, costAll: costAll),
+          : PriceBottomSheet(
+              bottomSheetSize: bottomSheetSize, costAll: costAll, onTap: () {}),
       child: isEmpty == true
           ? Center(
               child: Column(
