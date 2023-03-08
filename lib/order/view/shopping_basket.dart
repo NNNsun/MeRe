@@ -44,7 +44,7 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
     double bottomSheetSize = height * 0.2;
     double cardHeight = height * 0.18;
     // 비어있는지 확인
-    bool isEmpty = false;
+    bool isEmpty = true;
     int costAll = count * 5000;
     return DefaultLayout(
       backgroundColor: isEmpty == true ? Colors.white : INPUT_BG_COLOR,

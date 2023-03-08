@@ -29,15 +29,12 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
   String poneNumber = '';
   String certifyNumber = '';
   var myController = TextEditingController();
-  createErrorText() {
-    String errorText = '';
+
+  String? createErrorText() {
     if (isRightCertifyNumber == null || isRightCertifyNumber == true) {
       return null;
     }
-    if (isRightCertifyNumber == false) {
-      errorText = '인증번호를 확인해주세요.';
-    }
-    return errorText;
+    return '인증번호를 확인해주세요.';
   }
 
   @override
@@ -80,10 +77,8 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                       isPonNumber: true,
                       hintText: '전화번호를 입력하세요.',
                       onChanged: (String value) {
-                        setState(() {
-                          poneNumber = value;
-                          print(poneNumber);
-                        });
+                        poneNumber = value;
+                        print(poneNumber);
                       },
                     ),
                     Positioned(
@@ -152,8 +147,9 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                if (isClick)
-                  Stack(
+                Visibility(
+                  visible: isClick,
+                  child: Stack(
                     children: [
                       CustomTextFormField(
                         isNumber: true,
@@ -219,6 +215,7 @@ class _SignUpAuthScreenState extends State<SignUpAuthScreen> {
                       ),
                     ],
                   ),
+                ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.75),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
