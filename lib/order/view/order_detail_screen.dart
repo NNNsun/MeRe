@@ -62,7 +62,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          const RenderDivider(),
+          const RenderDivider(useHistory: false),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -87,7 +87,7 @@ class OrderDetailScreen extends StatelessWidget {
             ),
           ),
           const SliverToBoxAdapter(
-            child: RenderDivider(),
+            child: RenderDivider(useHistory: false),
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -206,7 +206,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          const RenderDivider(),
+          const RenderDivider(useHistory: false),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -224,7 +224,7 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
-          const RenderDivider(),
+          const RenderDivider(useHistory: false),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -368,7 +368,7 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
-          const RenderDivider(),
+          const RenderDivider(useHistory: false),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -444,7 +444,7 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
-          const RenderDivider()
+          const RenderDivider(useHistory: false)
         ],
       ),
     );
