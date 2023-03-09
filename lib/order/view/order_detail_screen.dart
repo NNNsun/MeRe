@@ -4,6 +4,8 @@ import 'package:new_me_re/common/const/color.dart';
 import 'package:new_me_re/common/const/img_path.dart';
 import 'package:new_me_re/common/layout/default_layout.dart';
 
+import '../../common/widget/render_divider.dart';
+
 class OrderDetailScreen extends StatelessWidget {
   const OrderDetailScreen({super.key});
 
@@ -60,7 +62,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          _renderDivider(),
+          const RenderDivider(),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -84,7 +86,9 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          _renderDivider(),
+          const SliverToBoxAdapter(
+            child: RenderDivider(),
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -202,7 +206,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          _renderDivider(),
+          const RenderDivider(),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -220,7 +224,7 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
-          _renderDivider(),
+          const RenderDivider(),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -364,7 +368,7 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
-          _renderDivider(),
+          const RenderDivider(),
           SliverToBoxAdapter(
               child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -440,20 +444,8 @@ class OrderDetailScreen extends StatelessWidget {
               ],
             ),
           )),
+          const RenderDivider()
         ],
-      ),
-    );
-  }
-
-  SliverToBoxAdapter _renderDivider() {
-    return const SliverToBoxAdapter(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Divider(
-          color: INPUT_BG_COLOR,
-          height: 12,
-          thickness: 12,
-        ),
       ),
     );
   }

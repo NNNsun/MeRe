@@ -45,3 +45,4 @@ const count_box = 'asset/svg/icon/component/count_box.svg';
 const delete_icon = 'asset/svg/icon/component/delete_icon.svg';
 const x_btn = 'asset/svg/icon/component/x_btn.svg';
 const heart_full_icon = 'asset/svg/icon/component/heart_full_icon.svg';
+const store_btn = 'asset/svg/icon/component/store_btn.svg';
