@@ -21,7 +21,6 @@ class HistoryScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              // 바깥 레이어 (날짜)
               child: Column(
                 children: [
                   Padding(
