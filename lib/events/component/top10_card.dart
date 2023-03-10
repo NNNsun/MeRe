@@ -38,7 +38,7 @@ class Top10Card extends StatelessWidget {
               style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w500,
-                  color: BODY_COLOR_BLACK),
+                  color: IMPACT_COLOR_GRAY),
             ),
           ),
           const SizedBox(
