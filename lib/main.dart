@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_me_re/common/const/color.dart';
-import 'package:new_me_re/history/view/write_review_screen.dart';
+
+import 'history/view/write_review_screen.dart';
 
 void main() {
   runApp(const _App());
@@ -36,8 +37,9 @@ class _App extends StatelessWidget {
           // ),
           //routerConfig: router,
 
-          home: const WriteReviewScreen()
-          //const Root(),
+          home: const WriteReviewScreen() // 리뷰작성
+          // const Root(), // 메인화면
+
           // const HistoryScreen()
           // const SignUpAuthScreen(), // 회원가입- SMS인증
           // const SignUpUserInfoScreen(), // 회원가입- 유저정보 입력

@@ -231,11 +231,11 @@ class _StoreReviewPageScreenState extends State<StoreReviewPageScreen> {
                                         trimCollapsedText: ' 더보기',
                                         trimExpandedText: ' 접기',
                                         moreStyle: TextStyle(
-                                            color: BODY_TEXT_COLOR_GRAY,
+                                            color: IMPACT_COLOR_GRAY,
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold),
                                         lessStyle: TextStyle(
-                                            color: BODY_TEXT_COLOR_GRAY,
+                                            color: IMPACT_COLOR_GRAY,
                                             fontSize: 12,
                                             fontWeight: FontWeight.bold),
                                       ),

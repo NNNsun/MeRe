@@ -122,7 +122,7 @@ class _AlarmCardState extends State<AlarmCard> {
                             widget.remainingTime,
                             style: const TextStyle(
                               fontSize: 12,
-                              color: BODY_TEXT_COLOR_GRAY,
+                              color: IMPACT_COLOR_GRAY,
                             ),
                           ),
                         ],

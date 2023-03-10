@@ -35,7 +35,7 @@ class OrderDetailScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   Text('닉네임',
                       style: TextStyle(
-                          color: BODY_TEXT_COLOR_GRAY,
+                          color: IMPACT_COLOR_GRAY,
                           fontWeight: FontWeight.w500)),
                   SizedBox(height: 4),
                   Text(
@@ -48,7 +48,7 @@ class OrderDetailScreen extends StatelessWidget {
                   Divider(height: 40),
                   Text('전화번호',
                       style: TextStyle(
-                          color: BODY_TEXT_COLOR_GRAY,
+                          color: IMPACT_COLOR_GRAY,
                           fontWeight: FontWeight.w500)),
                   SizedBox(height: 4),
                   Text(

@@ -72,7 +72,7 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
                   ),
                   const Text(
                     '미리 상품을 담아보세요',
-                    style: TextStyle(fontSize: 16, color: BODY_TEXT_COLOR_GRAY),
+                    style: TextStyle(fontSize: 16, color: IMPACT_COLOR_GRAY),
                   ),
                   const SizedBox(
                     height: 32,
@@ -151,7 +151,7 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
                                               fontWeight: FontWeight.w500)),
                                       Text('+ 딸기잼 추가(2)',
                                           style: TextStyle(
-                                              color: BODY_TEXT_COLOR_GRAY)),
+                                              color: IMPACT_COLOR_GRAY)),
                                     ],
                                   ),
                                   Padding(
@@ -182,7 +182,7 @@ class _ShoppingBasketState extends State<ShoppingBasket> {
                                               decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   border: Border.all(
-                                                    color: BODY_TEXT_COLOR_GRAY,
+                                                    color: IMPACT_COLOR_GRAY,
                                                   ),
                                                   borderRadius:
                                                       BorderRadius.circular(

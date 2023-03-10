@@ -560,7 +560,7 @@ SliverAppBar storeDetailAppBar(
                             child: Icon(
                               Icons.arrow_forward_ios,
                               size: 15,
-                              color: BODY_TEXT_COLOR_GRAY,
+                              color: IMPACT_COLOR_GRAY,
                             ),
                           ),
                         ],

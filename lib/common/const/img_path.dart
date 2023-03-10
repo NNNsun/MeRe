@@ -46,3 +46,7 @@ const delete_icon = 'asset/svg/icon/component/delete_icon.svg';
 const x_btn = 'asset/svg/icon/component/x_btn.svg';
 const heart_full_icon = 'asset/svg/icon/component/heart_full_icon.svg';
 const store_btn = 'asset/svg/icon/component/store_btn.svg';
+const photo_delete_btn = 'asset/svg/icon/component/photo_delete_btn.svg';
+const photo_icon = 'asset/svg/icon/component/photo_icon.svg';
+const star_empty = 'asset/svg/icon/component/star_empty.svg';
+const star_full = 'asset/svg/icon/component/star_full.svg';

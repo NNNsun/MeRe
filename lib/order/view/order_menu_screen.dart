@@ -76,7 +76,7 @@ class _OrderMenuScreenState extends State<OrderMenuScreen> {
                           Text(
                             '온어데일리',
                             style: TextStyle(
-                                color: BODY_TEXT_COLOR_GRAY, fontSize: 16),
+                                color: IMPACT_COLOR_GRAY, fontSize: 16),
                           ),
                           RemainQuantity(remainQuantity: 2)
                         ],

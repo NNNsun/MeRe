@@ -130,7 +130,7 @@ class StoreListCard extends StatelessWidget {
                     '${distance}km',
                     style: const TextStyle(
                       fontSize: 16,
-                      color: BODY_TEXT_COLOR_GRAY,
+                      color: IMPACT_COLOR_GRAY,
                     ),
                   ),
                 ],
