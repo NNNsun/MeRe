@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../common/const/color.dart';
 import '../../common/const/img_path.dart';
 
 class StarButtons extends StatefulWidget {
@@ -32,7 +33,7 @@ class _StarButtonsState extends State<StarButtons> {
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: SvgPicture.asset(
               star_empty,
-              color: _selectedIndex >= index ? Colors.yellow : null,
+              color: _selectedIndex >= index ? IMPACT_COLOR_Yellow : null,
             ),
           ),
         );

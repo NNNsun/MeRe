@@ -22,10 +22,12 @@ class _App extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: MaterialApp(
-          scrollBehavior: MyBehavior(),
+          scrollBehavior: NoBouncingScrollBehavior(),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: 'NotoSans',
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             textSelectionTheme: const TextSelectionThemeData(
               selectionHandleColor: PRIMARY_COLOR,
             ),
@@ -60,10 +62,10 @@ class _App extends StatelessWidget {
   }
 }
 
-class MyBehavior extends ScrollBehavior {
+class NoBouncingScrollBehavior extends ScrollBehavior {
   @override
-  Widget buildOverscrollIndicator(
-      BuildContext context, Widget child, ScrollableDetails details) {
-    return child;
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const ClampingScrollPhysics();
   }
 }
