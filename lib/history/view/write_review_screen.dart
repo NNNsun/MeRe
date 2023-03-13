@@ -146,9 +146,47 @@ class WriteReviewScreen extends StatelessWidget {
               ),
             ),
           ),
+          // const SliverToBoxAdapter(
+          //   child: ImageUploader(),
+          // )
           const SliverToBoxAdapter(
-            child: ImageUploader(),
-          )
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 30),
+              child: Text(
+                "리뷰를 남겨주세요",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: ReviewTextFormField(
+                hintText: '주문하신 매장의 후기를 150자내로 작성해주세요.',
+                onChanged: (String value) {},
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, bottom: 30, top: 10),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: PRIMARY_COLOR,
+                      shape: const StadiumBorder()),
+                  onPressed: () {}, // 제출 버튼
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      "작성 완료",
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  )),
+            ),
+          ),
         ],
       ),
     );
@@ -239,6 +277,55 @@ class _ImageUploaderState extends State<ImageUploader> {
             ],
           ),
       ],
+    );
+  }
+}
+
+class ReviewTextFormField extends StatelessWidget {
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
+  final String? hintText;
+
+  const ReviewTextFormField(
+      {super.key, this.controller, this.onChanged, this.hintText});
+
+  @override
+  Widget build(BuildContext context) {
+    final baseBorder = OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Colors.transparent,
+        width: 1.0,
+      ),
+      borderRadius: BorderRadius.circular(8),
+    );
+    return TextFormField(
+      maxLines: 6,
+      keyboardType: TextInputType.multiline,
+      controller: controller,
+      cursorColor: PRIMARY_COLOR,
+
+      onChanged: onChanged,
+      maxLength: 150, // 글자 수 제한
+
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(20),
+        hintText: hintText,
+
+        hintStyle: const TextStyle(
+          color: IMPACT_COLOR_DARK_GRAY,
+          fontSize: 14.0,
+        ),
+        fillColor: INPUT_BG_COLOR,
+        // false - 배경색 없음
+        // true - 배경색 있음
+        filled: true,
+        // 모든 Input 상태의 기본 스타일 세팅
+        counterText: '',
+        enabledBorder: baseBorder,
+        focusedBorder: baseBorder.copyWith(
+          borderSide: baseBorder.borderSide.copyWith(),
+        ),
+      ),
     );
   }
 }

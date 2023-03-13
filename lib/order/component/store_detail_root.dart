@@ -724,7 +724,6 @@ class MenuSearchHeaderDelegate extends SliverPersistentHeaderDelegate {
         autofocus: false,
         isSearch: true,
         errorText: null,
-        obscureText: true,
       ),
     );
   }

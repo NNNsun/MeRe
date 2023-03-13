@@ -7,7 +7,7 @@ import 'package:new_me_re/common/const/img_path.dart';
 class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? errorText;
-  final bool obscureText;
+
   final bool autofocus;
   final ValueChanged<String>? onChanged;
   final bool isPonNumber;
@@ -22,7 +22,6 @@ class CustomTextFormField extends StatelessWidget {
     this.isPonNumber = false,
     this.isSearch = false,
     this.autofocus = false,
-    this.obscureText = false,
     this.isNumber = false,
     this.isNickName = false,
     this.hintText,
